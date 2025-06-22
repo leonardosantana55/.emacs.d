@@ -21,7 +21,7 @@
 
 (scroll-bar-mode -1)
 (setq inhibit-startup-screen t)
-
+;(show-paren-mode)
 
 					;key bindings
 
@@ -29,6 +29,7 @@
 (keymap-global-set "C-z" 'kill-ring-save)
 
 
+					;package manager
 
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
@@ -37,6 +38,7 @@
 ;;(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 (package-initialize)
 
+					;slime
 
 (setq inferior-lisp-program "sbcl")
 ;(setq inferior-lisp-program "/opt/sbcl/bin/sbcl")
@@ -45,9 +47,37 @@
 ;(slime-setup '(slime-fancy slime-quicklisp slime-asdf slime-mrepl slime-banner slime-autodoc slime-fuzzy slime-editing-commands))
 
 
+					;Company config
+
 (add-hook 'after-init-hook 'global-company-mode)
 
+(keymap-global-set "C-<tab>" 'company-complete)
 
+(with-eval-after-load 'company
+  (define-key company-active-map
+              (kbd "C-<tab>")
+              #'company-select-next)
+  (define-key company-active-map
+              (kbd "<backtab>")
+              (lambda ()
+                (interactive)
+                (company-select-previous))))
+
+(setq company-tooltip-align-annotations t
+      company-tooltip-offset-display 'lines
+      company-minimum-prefix-length 2
+      company-idle-delay nil
+      company-lighter-base t
+      company-global-modes '(not erc-mode message-mode eshell-mode)
+      company-frontends '(company-pseudo-tooltip-frontend
+			  company-preview-frontend
+			  company-echo-metadata-frontend))
+
+
+
+
+
+ 
 
 
 
