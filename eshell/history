@@ -1,0 +1,26 @@
+git commit -m 'first'
+git branch -M main
+git remote add origin https://github.com/leonardosantana55/notes.git
+git push -u origin main
+git lfs install
+git lfs track "*.pdf"
+git add .gitattributes
+git add .
+git commit -m 'first'
+git push origin main
+ls
+ls
+ls
+cd
+cd notes
+ls
+pwd
+ls
+ls
+ls
+cd
+cd notes
+ls
+ls
+touch emacs.md
+exit

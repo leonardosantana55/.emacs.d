@@ -4,20 +4,20 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(cua-mode t)
  '(custom-enabled-themes '(wombat))
+ '(evil-default-state 'emacs)
  '(global-display-line-numbers-mode t)
  '(menu-bar-mode nil)
  '(package-selected-packages
-   '(ac-slime auto-complete cl-libify company slime slime-company))
+   '(ac-slime auto-complete cl-libify company evil slime slime-company))
  '(tool-bar-mode nil))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:family "Noto Sans Mono" :foundry "GOOG" :slant normal :weight regular :height 120 :width normal)))))
-;(setq display-line-numbers-type 'relative)
 
+
+
+;; change font based on if emacs is running on linux or not
+(let ((font-name (if (eq system-type 'gnu/linux) "Noto Sans Mono" "Cascadia Mono")))
+ '(default ((t (:family font-name :foundry "outline" :slant normal :weight regular :height 120 :width normal)))))
 
 (scroll-bar-mode -1)
 (setq inhibit-startup-screen t)
@@ -25,9 +25,9 @@
 
 					;key bindings
 
-(keymap-global-set "C-v" 'clipboard-yank)
-(keymap-global-set "C-z" 'kill-ring-save)
-
+;(keymap-global-set "C-v" 'clipboard-yank)
+;(keymap-global-set "C-z" 'kill-ring-save)
+(keymap-global-set "C-c b" 'ibuffer)
 
 					;package manager
 
@@ -75,9 +75,16 @@
 
 
 
+					;Evil mode
 
+;; Download Evil
+(unless (package-installed-p 'evil)
+  (package-install 'evil))
 
- 
+;; Enable Evil
+(require 'evil)
+(evil-mode 1)
+
 
 
 
@@ -298,3 +305,9 @@
 ;; (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
 ;; (eval-after-load "auto-complete"
 ;;   '(add-to-list 'ac-modes 'slime-repl-mode))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:family "Cascadia Mono" :foundry "outline" :slant normal :weight regular :height 120 :width normal)))))
