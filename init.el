@@ -4,9 +4,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(cua-mode t)
  '(custom-enabled-themes '(wombat))
- '(evil-default-state 'emacs)
  '(global-display-line-numbers-mode t)
  '(menu-bar-mode nil)
  '(package-selected-packages
@@ -16,11 +14,12 @@
 
 
 ;; change font based on if emacs is running on linux or not
-(let ((font-name (if (eq system-type 'gnu/linux) "Noto Sans Mono" "Cascadia Mono")))
+(let ((font-name (if (eq system-type 'gnu/linux) "Monospace regular" "Cascadia Mono")))
  '(default ((t (:family font-name :foundry "outline" :slant normal :weight regular :height 120 :width normal)))))
 
 (scroll-bar-mode -1)
 (setq inhibit-startup-screen t)
+(setq dired-kill-when-opening-new-dired-buffer 1)
 ;(show-paren-mode)
 
 					;key bindings
@@ -28,6 +27,12 @@
 ;(keymap-global-set "C-v" 'clipboard-yank)
 ;(keymap-global-set "C-z" 'kill-ring-save)
 (keymap-global-set "C-c b" 'ibuffer)
+(keymap-global-set
+ ;Load init.el
+ "C-c l i"
+ (lambda ()
+   (interactive)
+   (load-file (expand-file-name "~/.emacs.d/init.el"))))
 
 					;package manager
 
@@ -85,10 +90,10 @@
 (require 'evil)
 (evil-mode 1)
 
-
-
-
-
+(setq evil-default-state 'emacs)
+(evil-set-initial-state 'shell-mode 'emacs)
+(evil-set-initial-state 'slime-repl-mode 'emacs)
+; to find the name of the godamn mode is C-h v -- major-mode
 
 ;; Setup load-path and autoloads
 ;(add-to-list 'load-path "~/dir/to/cloned/slime")
@@ -310,4 +315,4 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Cascadia Mono" :foundry "outline" :slant normal :weight regular :height 120 :width normal)))))
+ '(default ((t (:family "Noto Sans Mono" :foundry "GOOG" :slant normal :weight regular :height 120 :width normal)))))
