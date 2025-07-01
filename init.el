@@ -12,17 +12,22 @@
  '(tool-bar-mode nil))
 
 
-
+;Noto Sans Mono
+(custom-set-faces
 ;; change font based on if emacs is running on linux or not
 (let ((font-name (if (eq system-type 'gnu/linux) "Monospace regular" "Cascadia Mono")))
- '(default ((t (:family font-name :foundry "outline" :slant normal :weight regular :height 120 :width normal)))))
+ '(default ((t (:family font-name :foundry "outline" :slant normal :weight regular :height 120 :width normal))))))
 
 (scroll-bar-mode -1)
 (setq inhibit-startup-screen t)
 (setq dired-kill-when-opening-new-dired-buffer 1)
 ;(show-paren-mode)
+(setq help-window-select t)  ; Switch to help buffers automatically
+(electric-pair-mode t)
 
 					;key bindings
+
+;TODO adicionar C-o o para mudar de janela
 
 ;(keymap-global-set "C-v" 'clipboard-yank)
 ;(keymap-global-set "C-z" 'kill-ring-save)
@@ -51,6 +56,10 @@
 (slime-setup '(slime-fancy slime-company))
 ;(slime-setup '(slime-fancy slime-quicklisp slime-asdf slime-mrepl slime-banner slime-autodoc slime-fuzzy slime-editing-commands))
 
+(add-hook 'lisp-mode-hook
+	  (lambda () (keymap-local-set "C-c e b" #'slime-eval-buffer)))
+
+;(keymap-global-set "C-c e b" #'slime-eval-buffer)
 
 					;Company config
 
@@ -70,7 +79,7 @@
 
 (setq company-tooltip-align-annotations t
       company-tooltip-offset-display 'lines
-      company-minimum-prefix-length 2
+      company-minimum-prefix-length 0
       company-idle-delay nil
       company-lighter-base t
       company-global-modes '(not erc-mode message-mode eshell-mode)
@@ -87,13 +96,41 @@
   (package-install 'evil))
 
 ;; Enable Evil
+(setq evil-disable-insert-state-bindings t)
 (require 'evil)
 (evil-mode 1)
 
-(setq evil-default-state 'emacs)
-(evil-set-initial-state 'shell-mode 'emacs)
-(evil-set-initial-state 'slime-repl-mode 'emacs)
-; to find the name of the godamn mode is C-h v -- major-mode
+(setq evil-default-state 'insert)
+
+;; (setq evil-default-state 'emacs)
+;; (evil-set-initial-state 'shell-mode 'emacs)
+;; ;(evil-set-initial-state 'slime-repl-mode 'emacs)
+;; (evil-set-initial-state 'Info-mode 'emacs)
+;; (evil-set-initial-state 'fundamental-mode 'emacs)
+
+;; (setq evil-emacs-state-cursor 'bar)
+
+;; (defun my-evil-change-advice (orig-fun &rest args)
+;;   "Advice around `evil-change` to enter Emacs state after change."
+;;   (apply orig-fun args)       ;; perform the original change operation
+;;   (evil-normal-state)         ;; exit insert state (ESC)
+;;   (evil-emacs-state)         ;; switch to Emacs state (C-z)
+;;   (forward-char 1))           ;; move cursor one character to the right
+
+;; (advice-add 'evil-change :around #'my-evil-change-advice)
+
+;; (defun my-evil-insert-advice (orig-fun &rest args)
+;;   "Advice around `evil-insert` to enter Emacs state after change."
+;;   (apply orig-fun args)       ;; perform the original change operation
+;;   (evil-normal-state)         ;; exit insert state (ESC)
+;;   (evil-emacs-state)         ;; switch to Emacs state (C-z)
+;;   (backward-char 1)
+  
+;; (advice-add 'evil-insert :around #'my-evil-change-advice)
+
+
+
+
 
 ;; Setup load-path and autoloads
 ;(add-to-list 'load-path "~/dir/to/cloned/slime")
@@ -310,9 +347,3 @@
 ;; (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
 ;; (eval-after-load "auto-complete"
 ;;   '(add-to-list 'ac-modes 'slime-repl-mode))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:family "Noto Sans Mono" :foundry "GOOG" :slant normal :weight regular :height 120 :width normal)))))
