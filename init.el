@@ -16,7 +16,8 @@
 (custom-set-faces
 ;; change font based on if emacs is running on linux or not
 (let ((font-name (if (eq system-type 'gnu/linux) "Monospace regular" "Cascadia Mono")))
- '(default ((t (:family font-name :foundry "outline" :slant normal :weight regular :height 120 :width normal))))))
+ `(default ((t (:family ,font-name :foundry "outline" :slant normal :weight regular :height 120 :width normal))))))
+
 
 (scroll-bar-mode -1)
 (setq inhibit-startup-screen t)
