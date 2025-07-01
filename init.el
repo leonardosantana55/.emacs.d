@@ -27,7 +27,11 @@
 
 					;key bindings
 
-;TODO adicionar C-o o para mudar de janela
+;;TODO ao rodar commando com M-! pular foco para a janela de output.
+;;(para facilitar fechar o novo buffer criado)
+
+;; sair do minibuffer com C-[
+
 
 ;(keymap-global-set "C-v" 'clipboard-yank)
 ;(keymap-global-set "C-z" 'kill-ring-save)
