@@ -12,11 +12,27 @@
  '(tool-bar-mode nil))
 
 
-;Noto Sans Mono
 (custom-set-faces
-;; change font based on if emacs is running on linux or not
-(let ((font-name (if (eq system-type 'gnu/linux) "Monospace regular" "Cascadia Mono")))
- `(default ((t (:family ,font-name :foundry "outline" :slant normal :weight regular :height 120 :width normal))))))
+;;change font based on if emacs is running on linux or not
+(let ((font-name (if (eq system-type 'gnu/linux)
+		      "Noto Sans Mono"
+		      "Cascadia Mono")))
+  `(default ((t (:family ,font-name :foundry "outline" :slant normal :weight regular :height 120 :width normal))))))
+
+;; (custom-set-face
+;;  (if (eq system-type 'gnu/linux)
+;;      '(default ((t (:family "Noto Sans Mono"
+;; 			    :foundry "GOOG"
+;; 			    :slant normal
+;; 			    :weight regular
+;; 			    :height 120
+;; 			    :width normal))))
+;;      '(default ((t (:family "Cascadia Mono"
+;; 			  :foundry "outline"
+;; 			  :slant normal
+;; 			  :weight regular
+;; 			  :height 120
+;; 			  :width normal))))))
 
 
 (scroll-bar-mode -1)
