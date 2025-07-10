@@ -36,9 +36,10 @@
 
 
 (scroll-bar-mode -1)
+(setq scroll-margin 5)
+(setq scroll-step 1)
 (setq inhibit-startup-screen t)
 (setq dired-kill-when-opening-new-dired-buffer 1)
-;(show-paren-mode)
 (setq help-window-select t)  ; Switch to help buffers automatically
 (electric-pair-mode t)
 
