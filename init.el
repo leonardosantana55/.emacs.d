@@ -8,24 +8,35 @@
  '(global-display-line-numbers-mode t)
  '(menu-bar-mode nil)
  '(package-selected-packages
-   '(ac-slime auto-complete cl-libify company evil slime slime-company))
+   '(ac-slime
+     auto-complete
+     cl-libify
+     company
+     evil
+     slime
+     slime-company))
  '(tool-bar-mode nil))
 
 (custom-set-faces
-;;change font based on if emacs is running on linux or not
+;;change font based on OS
 (let ((font-name (if (eq system-type 'gnu/linux)
 		      "Noto Sans Mono"
 		      "Cascadia Mono")))
-  `(default ((t (:family ,font-name :foundry "outline" :slant normal :weight regular :height 120 :width normal))))))
+  `(default ((t (:family ,font-name
+                         :foundry "outline"
+                         :slant normal
+                         :weight regular
+                         :height 120
+                         :width normal))))))
 
 
 ;;;EMACS CUSTOM OPTIONS
-;; Use spaces, not tabs, for indentation.
+(column-number-mode t); show column number on mode line
 (icomplete-mode 1)
-(setq completions-format 'one-column) ; or 'horizontal, or 'one-column
-(setq completion-auto-select 'second-tab)   ; Focus on completions buffer 
-(setq cursor-in-non-selected-windows nil)
-(setq-default indent-tabs-mode nil)
+(setq completions-format 'one-column); or 'horizontal, or 'one-column
+(setq completion-auto-select 'second-tab); Focus on completions buffer 
+(setq cursor-in-non-selected-windows nil) ; show cursor only in the active window
+(setq-default indent-tabs-mode nil); Use spaces, not tabs, for indentation.
 (setq doc-view-scale-internally t)
 (setq doc-view-resolution 300)
 (scroll-bar-mode -1)
