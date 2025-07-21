@@ -5,47 +5,41 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes '(wombat))
- '(global-display-line-numbers-mode t)
  '(menu-bar-mode nil)
  '(package-selected-packages
-   '(ac-slime
-     auto-complete
-     cl-libify
-     company
-     evil
-     slime
-     slime-company))
+   '(ac-slime cl-libify company-anaconda elpy elpygen evil paredit
+              rainbow-delimiters slime-company))
  '(tool-bar-mode nil))
 
 (custom-set-faces
-;;change font based on OS
-(let ((font-name (if (eq system-type 'gnu/linux)
-		      "Noto Sans Mono"
-		      "Cascadia Mono")))
-  `(default ((t (:family ,font-name
-                         :foundry "outline"
-                         :slant normal
-                         :weight regular
-                         :height 120
-                         :width normal))))))
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:family "Noto Sans Mono" :foundry "outline" :slant normal :weight regular :height 120 :width normal)))))
 
 
 ;;;EMACS CUSTOM OPTIONS
 (column-number-mode t); show column number on mode line
-(icomplete-mode 1)
+(icomplete-mode 1); show completion on the minibuffer
 (setq completions-format 'one-column); or 'horizontal, or 'one-column
 (setq completion-auto-select 'second-tab); Focus on completions buffer 
 (setq cursor-in-non-selected-windows nil) ; show cursor only in the active window
 (setq-default indent-tabs-mode nil); Use spaces, not tabs, for indentation.
 (setq doc-view-scale-internally t)
 (setq doc-view-resolution 300)
-(scroll-bar-mode -1)
+(scroll-bar-mode -1); hide scrool bar
 (setq scroll-margin 4)
 (setq scroll-step 1)
 (setq inhibit-startup-screen t)
 (setq dired-kill-when-opening-new-dired-buffer 1)
-(setq help-window-select t)  ; Switch to help buffers automatically
+(setq help-window-select t)  ; Switch focus to help buffers automatically
 (electric-pair-mode t) ; Match parenthesis
+
+(add-hook 'lisp-mode-hook 'display-line-numbers-mode)
+(add-hook 'emacs-lisp-mode-hook 'display-line-numbers-mode)
+(add-hook 'c-mode-hook 'display-line-numbers-mode)
+(add-hook 'python-mode-hook 'display-line-numbers-mode)
 
 
 ;;;KEY BINDINGS
@@ -85,6 +79,18 @@
 
 ;; start slime automatically when we open a lisp file
 
+;;;thins fucking thing is broken. keeps changing how company works
+;; ELPY
+;; (use-package elpy
+;;   :ensure t
+;;   :init
+;;   (elpy-enable))
+
+;; (add-hook 'elpy-mode-hook
+;;           (lambda ()
+;;             (set (make-local-variable 'company-backends)
+;;                  '(elpy-company-backend company-dabbrev-code company-yasnippet))))
+
 
 ;;;COMPANY CONFIG
 (add-hook 'after-init-hook 'global-company-mode) ;company starts when emacs boots
@@ -110,6 +116,10 @@
 			  company-preview-frontend
 			  company-echo-metadata-frontend))
 
+(eval-after-load "company"
+  '(add-to-list 'company-backends 'company-anaconda))
+(add-hook 'python-mode-hook 'anaconda-mode)
+
 
 ;;;EVIL MODE
 ;; Download Evil
@@ -128,6 +138,5 @@
 (evil-set-initial-state 'electric-buffer-menu-mode 'emacs)
 (evil-set-initial-state 'Info-mode 'emacs)
 (evil-set-initial-state 'help-mode 'emacs)
-
 
 
