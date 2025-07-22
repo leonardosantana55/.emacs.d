@@ -4,6 +4,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(column-number-mode t)
  '(custom-enabled-themes '(wombat))
  '(menu-bar-mode nil)
  '(package-selected-packages
@@ -11,13 +12,30 @@
               rainbow-delimiters slime-company))
  '(tool-bar-mode nil))
 
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:family "Noto Sans Mono" :foundry "outline" :slant normal :weight regular :height 120 :width normal)))))
+;; (custom-set-faces
+;;  ;; custom-set-faces was added by Custom.
+;;  ;; If you edit it by hand, you could mess it up, so be careful.
+;;  ;; Your init file should contain only one such instance.
+;;  ;; If there is more than one, they won't work right.
+;;  '(default ((t (:family "Noto Sans Mono" :foundry "outline" :slant normal :weight regular :height 120 :width normal)))))
 
+
+;; change font based on if emacs is running on linux or not
+;(let ((font-name (if (eq system-type 'gnu/linux) "Noto Sans Mono" "Kode Mono Medium")))
+;  (set-face-attribute 'default nil :font font-name :height 120 :weight 'medium))
+
+(if (eq system-type 'gnu/linux)
+    (set-face-attribute 'default
+                        nil
+                        :font "Noto Sans Mono"
+                        :height 120)
+  (set-face-attribute 'default
+                      nil
+                      :font "Chivo Mono"
+                      :height 120
+                      :weight 'medium))
+
+ ;; '(default ((t (:family "Kode Mono Medium" :foundry "outline" :slant normal :weight medium :height 120 :width normal)))))
 
 ;;;EMACS CUSTOM OPTIONS
 (column-number-mode t); show column number on mode line
@@ -138,5 +156,3 @@
 (evil-set-initial-state 'electric-buffer-menu-mode 'emacs)
 (evil-set-initial-state 'Info-mode 'emacs)
 (evil-set-initial-state 'help-mode 'emacs)
-
-
