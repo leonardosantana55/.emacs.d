@@ -1,3 +1,5 @@
+(setq custom-theme-directory "~/.emacs.d/themes/")
+
 ;;; -*- lexical-binding: t -*-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -5,7 +7,12 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
- '(custom-enabled-themes '(wombat))
+ '(custom-enabled-themes '(modus-vivendi my-wombat))
+ '(custom-safe-themes
+   '("90903f9847cdccac16cc658dd06ae8906bccdf73327952d17b65633d9508fa71"
+     "e5c58b45a93d2f9f87e727d8d2b17ce7ba792d12cee6ecef6e27b5b2ea25c60e"
+     "fc809f7a044fefc09dbacf8170083a7957c21d53e1a0cc3146fcfe5d65747f9c"
+     default))
  '(menu-bar-mode nil)
  '(package-selected-packages
    '(ac-slime cl-libify company-anaconda elpy elpygen evil paredit
@@ -133,3 +140,7 @@
 (evil-set-initial-state 'electric-buffer-menu-mode 'emacs)
 (evil-set-initial-state 'Info-mode 'emacs)
 (evil-set-initial-state 'help-mode 'emacs)
+
+
+;; TODO: create a command that plays the M-! with the arguments
+;; git add (current-file) && git commit -m "up" && git xpushx
