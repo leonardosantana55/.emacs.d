@@ -21,6 +21,7 @@
 
 
 ;;;EMACS CUSTOM OPTIONS
+(setq blink-cursor-blinks 0) 
 (column-number-mode t); show column number on mode line
 (icomplete-mode 1); show completion on the minibuffer
 (setq completions-format 'one-column); or 'horizontal, or 'one-column
