@@ -54,6 +54,15 @@
    (interactive)
    (load-file (expand-file-name "~/.emacs.d/init.el"))))
 
+(keymap-global-set
+ ;function for updating the file on github
+ "C-c g p f"
+ (lambda ()
+   (interactive)
+   (shell-command
+    (format "git add %s && git commit -m \"emacs\" && git push"
+            (buffer-name)))))
+
 
 ;;;PACKAGE MANAGER
 (require 'package)
@@ -79,20 +88,6 @@
 (add-hook 'lisp-mode-hook
 	  (lambda ()
             (keymap-local-set "C-c s s" #'open-slime-and-go-back)))
-
-;; start slime automatically when we open a lisp file
-
-;;;thins fucking thing is broken. keeps changing how company works
-;; ELPY
-;; (use-package elpy
-;;   :ensure t
-;;   :init
-;;   (elpy-enable))
-
-;; (add-hook 'elpy-mode-hook
-;;           (lambda ()
-;;             (set (make-local-variable 'company-backends)
-;;                  '(elpy-company-backend company-dabbrev-code company-yasnippet))))
 
 
 ;;;COMPANY CONFIG
