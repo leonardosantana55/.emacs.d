@@ -14,6 +14,7 @@
      "fc809f7a044fefc09dbacf8170083a7957c21d53e1a0cc3146fcfe5d65747f9c"
      default))
  '(menu-bar-mode nil)
+ '(org-agenda-files nil)
  '(package-selected-packages
    '(ac-slime cl-libify company-anaconda elpy elpygen evil paredit
               rainbow-delimiters slime-company))
@@ -21,6 +22,7 @@
 
 
 ;;;EMACS CUSTOM OPTIONS
+(add-hook 'dired-mode-hook 'dired-omit-mode)
 (setq blink-cursor-blinks 0) 
 (column-number-mode t); show column number on mode line
 (icomplete-mode 1); show completion on the minibuffer
@@ -55,7 +57,8 @@
    (load-file (expand-file-name "~/.emacs.d/init.el"))))
 
 (keymap-global-set
- ;function for updating the file on github
+ ;;function for updating the file on github
+ ;; github push file
  "C-c g p f"
  (lambda ()
    (interactive)
@@ -68,6 +71,25 @@
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
+
+
+;;;ORG
+;(setq org-default-notes-file "~/org/notes.org")
+;(global-set-key (kbd "C-c o l") #'org-store-link)
+;(global-set-key (kbd "C-c o a") #'org-agenda)
+;(global-set-key (kbd "C-c o c") #'org-capture)
+
+;(setq org-capture-templates '(("t" "Todo [inbox]" entry
+                              ;;  (file+headline "~/gtd/inbox.org" "Tasks")
+                              ;;  "* TODO %i%?")
+                              ;; ("T" "Tickler" entry
+                              ;;  (file+headline "~/gtd/tickler.org" "Tickler")
+                              ;;  "* %i%? \n %U")))
+
+;;agenda
+;(setq org-agenda-files '("~/org/gtd/inbox.org"
+;                         "~/org/gtd/gtd.org"
+;                         "~/org/gtd/tickler.org"))
 
 
 ;;;SLIME
@@ -140,3 +162,9 @@
 
 ;; TODO: create a command that plays the M-! with the arguments
 ;; git add (current-file) && git commit -m "up" && git xpushx
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
