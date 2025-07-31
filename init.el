@@ -74,22 +74,17 @@
 
 
 ;;;ORG
-;(setq org-default-notes-file "~/org/notes.org")
-;(global-set-key (kbd "C-c o l") #'org-store-link)
-;(global-set-key (kbd "C-c o a") #'org-agenda)
-;(global-set-key (kbd "C-c o c") #'org-capture)
+;;for taking notes very quickly
+(let ((file-name "~/org/notes.org"))
+  (setq org-default-notes-file file-name)
+  
+  (setq org-capture-templates '(("n" "Simple note" plain
+                                 (file "")
+                                 "%T %a\n%?"
+                                 :empty-lines-before 1)))
 
-;(setq org-capture-templates '(("t" "Todo [inbox]" entry
-                              ;;  (file+headline "~/gtd/inbox.org" "Tasks")
-                              ;;  "* TODO %i%?")
-                              ;; ("T" "Tickler" entry
-                              ;;  (file+headline "~/gtd/tickler.org" "Tickler")
-                              ;;  "* %i%? \n %U")))
-
-;;agenda
-;(setq org-agenda-files '("~/org/gtd/inbox.org"
-;                         "~/org/gtd/gtd.org"
-;                         "~/org/gtd/tickler.org"))
+  (define-key global-map (kbd "C-c c n")
+              (lambda () (interactive) (org-capture file-name "n"))))
 
 
 ;;;SLIME
