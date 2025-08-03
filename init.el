@@ -75,16 +75,26 @@
 
 ;;;ORG
 ;;for taking notes very quickly
-(let ((file-name "~/org/notes.org"))
-  (setq org-default-notes-file file-name)
-  
-  (setq org-capture-templates '(("n" "Simple note" plain
-                                 (file "")
-                                 "%T %a\n%?"
-                                 :empty-lines-before 1)))
+(setq org-default-notes-file "~/org/notes.org")
 
-  (define-key global-map (kbd "C-c c n")
-              (lambda () (interactive) (org-capture file-name "n"))))
+(setq org-capture-templates '(("n" "Simple note" plain
+                               (file "")
+                               "%T %a\n%?"
+                               :empty-lines-before 1)
+                              ("t" "TODO" plain
+                               (file "~/org/gtd/inbox.org")
+                               "* TODO %?")))
+
+(define-key global-map (kbd "C-c c" )'org-capture)
+
+;;refile
+(setq org-refile-targets
+      '(("~/org/gtd/projects.org" :maxlevel . 3)
+        ("~/org/gtd/someday.org" :maxlevel . 3)))
+
+
+;(define-key global-map (kbd "C-c c n")
+;           (lambda () (interactive) (org-capture file-name "n"))))
 
 
 ;;;SLIME
