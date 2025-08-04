@@ -56,15 +56,19 @@
    (interactive)
    (load-file (expand-file-name "~/.emacs.d/init.el"))))
 
-(keymap-global-set
- ;;function for updating the file on github
- ;; github push file
- "C-c g p f"
- (lambda ()
+
+;;GIT
+(defun my-git-push-current-file ()
    (interactive)
    (shell-command
     (format "git add %s && git commit -m \"emacs\" && git push"
-            (buffer-name)))))
+            (buffer-name))))
+(keymap-global-set "C-c g p f" #'my-git-push-current-file)
+
+(defun my-git-push-folder ()
+   (interactive)
+   (shell-command
+    (format "git add . && git commit -m \"emacs\" && git push")))
 
 
 ;;;PACKAGE MANAGER
@@ -77,24 +81,40 @@
 ;;for taking notes very quickly
 (setq org-default-notes-file "~/org/notes.org")
 
-(setq org-capture-templates '(("n" "Simple note" plain
-                               (file "")
+(setq org-capture-templates '(("g" "Generic note" plain
+                               (file "~/org/notes/generic.org")
                                "%T %a\n%?"
-                               :empty-lines-before 1)
+                               :jump-to-captured t
+                               :empty-lines-before 1
+                               :empty-lines-after 1)
+
+                              ("w" "Work note" plain
+                               (file+headline "~/org/notes/work.org" "Current")
+                               "%T\n Subject:%?"
+                               :jump-to-captured t
+                               :empty-lines-before 1
+                               :empty-lines-after 1)
+                              
                               ("t" "TODO" plain
                                (file "~/org/gtd/inbox.org")
                                "* TODO %?")))
 
 (define-key global-map (kbd "C-c c" )'org-capture)
 
+;;
+(defun my-org-dir ()
+  (interactive)
+  (dired "~/org"))
+
+(defun my-notes ()
+  (interactive)
+  (dired "~/notes"))
+
 ;;refile
 (setq org-refile-targets
-      '(("~/org/gtd/projects.org" :maxlevel . 3)
-        ("~/org/gtd/someday.org" :maxlevel . 3)))
-
-
-;(define-key global-map (kbd "C-c c n")
-;           (lambda () (interactive) (org-capture file-name "n"))))
+      '(("~/org/gtd/projects.org" :maxlevel . 1)
+        ("~/org/gtd/someday.org" :maxlevel . 1)
+        (nil :maxlevel . 1)))
 
 
 ;;;SLIME
