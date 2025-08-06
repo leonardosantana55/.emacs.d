@@ -113,6 +113,8 @@
   (interactive)
   (dired "~/org"))
 
+(define-key global-map (kbd "<f9>") 'my-orgd)
+
 (defun my-notesd ()
   (interactive)
   (dired "~/notes/"))
