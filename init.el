@@ -22,8 +22,8 @@
 
 
 ;;;EMACS CUSTOM OPTIONS
-(add-hook 'dired-mode-hook 'dired-omit-mode)
-(setq blink-cursor-blinks 0) 
+(add-hook 'dired-mode-hook 'dired-omit-mode); hide backup files
+(setq blink-cursor-blinks 0); never stop blinking 
 (column-number-mode t); show column number on mode line
 (icomplete-mode 1); show completion on the minibuffer
 (setq completions-format 'one-column); or 'horizontal, or 'one-column
@@ -32,7 +32,7 @@
 (setq-default indent-tabs-mode nil); Use spaces, not tabs, for indentation.
 (setq doc-view-scale-internally t)
 (setq doc-view-resolution 300)
-(scroll-bar-mode -1); hide scrool bar
+(scroll-bar-mode -1); hide scroll bar
 (setq scroll-margin 4)
 (setq scroll-step 1)
 (setq inhibit-startup-screen t)
@@ -79,7 +79,7 @@
 
 ;;;ORG
 ;;for taking notes very quickly
-(setq org-default-notes-file "~/org/notes.org")
+;(setq org-default-notes-file "~/org/notes.org")
 
 (setq org-capture-templates '(("g" "Generic note" plain
                                (file "~/org/notes/generic.org")
@@ -90,31 +90,60 @@
 
                               ("w" "Work note" plain
                                (file+headline "~/org/notes/work.org" "Current")
-                               "%T\n Subject:%?"
+                               "** %?\n%T\n-"
                                :jump-to-captured t
                                :empty-lines-before 1
                                :empty-lines-after 1)
+
+                              ;; ("s" "Study note" plain
+                              ;;  (file+headline "~/org/notes/generic.org" "study")
+                              ;;  "pg: x\n _%x_ %?"
+                              ;;  :jump-to-captured t
+                              ;;  :empty-lines-before 1
+                              ;;  :empty-lines-after 1)
                               
                               ("t" "TODO" plain
-                               (file "~/org/gtd/inbox.org")
-                               "* TODO %?")))
+                               (file+headline "~/org/gtd/inbox.org" "New")
+                               "** TODO %?")))
 
 (define-key global-map (kbd "C-c c" )'org-capture)
 
-;;
-(defun my-org-dir ()
+;;dired
+(defun my-orgd ()
   (interactive)
   (dired "~/org"))
 
-(defun my-notes ()
+(defun my-notesd ()
   (interactive)
-  (dired "~/notes"))
+  (dired "~/notes/"))
+
+(setq org-refile-use-outline-path 'file)
 
 ;;refile
-(setq org-refile-targets
-      '(("~/org/gtd/projects.org" :maxlevel . 1)
-        ("~/org/gtd/someday.org" :maxlevel . 1)
-        (nil :maxlevel . 1)))
+;;this is better for maintence
+(setq org-agenda-files (list "~/org/gtd/projects.org"
+                             "~/org/gtd/someday.org"
+                             "~/org/notes/studies/"))
+
+(setq org-refile-targets '((org-agenda-files :maxlevel . 1)))
+
+;;this has no advantages
+;; (setq org-agenda-files (list "~/org/notes/studies/"))
+
+;; (setq org-refile-targets '(("~/org/gtd/projects.org" :maxlevel . 1)
+;;                            ("~/org/gtd/someday.org" :maxlevel . 1)
+;;                            (nil :maxlevel . 1)
+;;                            (org-agenda-files :maxlevel . 1)))
+
+;;this is better for more explicit locations
+;; (setq org-refile-targets
+;;       (append
+;;        '(("~/org/gtd/projects.org" :maxlevel . 1)
+;;          ("~/org/gtd/someday.org" :maxlevel . 1)
+;;          (nil :maxlevel . 1))
+;;        (mapcar (lambda (file)
+;;                  (cons (concat "~/org/notes/studies/" file) '(:maxlevel . 1)))
+;;                (directory-files "~/org/notes/studies/" nil "\\.org$"))))
 
 
 ;;;SLIME
@@ -187,9 +216,3 @@
 
 ;; TODO: create a command that plays the M-! with the arguments
 ;; git add (current-file) && git commit -m "up" && git xpushx
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
