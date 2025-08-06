@@ -9,12 +9,13 @@
  '(column-number-mode t)
  '(custom-enabled-themes '(modus-vivendi my-wombat))
  '(custom-safe-themes
-   '("90903f9847cdccac16cc658dd06ae8906bccdf73327952d17b65633d9508fa71"
+   '("0279bed8db57df6f093b2f143d45934320532b99ec212a4a9c59d0484934763c"
+     "90903f9847cdccac16cc658dd06ae8906bccdf73327952d17b65633d9508fa71"
      "e5c58b45a93d2f9f87e727d8d2b17ce7ba792d12cee6ecef6e27b5b2ea25c60e"
      "fc809f7a044fefc09dbacf8170083a7957c21d53e1a0cc3146fcfe5d65747f9c"
      default))
  '(menu-bar-mode nil)
- '(org-agenda-files nil)
+ '(org-agenda-files nil t)
  '(package-selected-packages
    '(ac-slime cl-libify company-anaconda elpy elpygen evil paredit
               rainbow-delimiters slime-company))
@@ -119,15 +120,18 @@
   (interactive)
   (dired "~/notes/"))
 
-(setq org-refile-use-outline-path 'file)
+;(setq org-refile-use-outline-path 'file)
 
+(setq org-refile-targets
+       '(("~/org/gtd/projects.org" :maxlevel . 1)
+         ("~/org/gtd/someday.org" :maxlevel . 1)
+         (nil :maxlevel . 1)))
 ;;refile
 ;;this is better for maintence
-(setq org-agenda-files (list "~/org/gtd/projects.org"
-                             "~/org/gtd/someday.org"
-                             "~/org/notes/studies/"))
+;(setq org-agenda-files (list "~/org/gtd/projects.org"
+;                             "~/org/gtd/someday.org"))
 
-(setq org-refile-targets '((org-agenda-files :maxlevel . 1)))
+;(setq org-refile-targets '((org-agenda-files :maxlevel . 1)))
 
 ;;this has no advantages
 ;; (setq org-agenda-files (list "~/org/notes/studies/"))
@@ -218,3 +222,9 @@
 
 ;; TODO: create a command that plays the M-! with the arguments
 ;; git add (current-file) && git commit -m "up" && git xpushx
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
