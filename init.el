@@ -61,15 +61,25 @@
 ;;GIT
 (defun my-git-push-current-file ()
    (interactive)
-   (shell-command
+   (async-shell-command
     (format "git add %s && git commit -m \"emacs\" && git push"
             (buffer-name))))
 (keymap-global-set "C-c g p f" #'my-git-push-current-file)
 
 (defun my-git-push-folder ()
    (interactive)
-   (shell-command
+   (async-shell-command
     (format "git add . && git commit -m \"emacs\" && git push")))
+
+(defun my-git-push-init-and-org ()
+  (interactive)
+  (async-shell-command
+   (format "cd %s && git add init.el && git commit -m \"auto\" && git push"
+           (expand-file-name "~/.emacs.d/")))
+  (shell-command
+   (format "cd %s && git add . && git commit -m \"auto\" && git push"
+           (expand-file-name "~/org/"))))
+(keymap-global-set "C-c g p a" #'my-git-push-init-and-org)
 
 
 ;;;PACKAGE MANAGER
