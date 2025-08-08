@@ -94,14 +94,14 @@
 
 (setq org-capture-templates '(("g" "Generic note" plain
                                (file "~/org/notes/generic.org")
-                               "%T %a\n%?"
+                               "** %?\n%T\n%a\n-------------------------------------------------------------"
                                :jump-to-captured t
                                :empty-lines-before 1
                                :empty-lines-after 1)
 
                               ("w" "Work note" plain
                                (file+headline "~/org/notes/work.org" "Current")
-                               "** %?\n%T\n-"
+                               "** %?\n%T\n-------------------------------------------------------------"
                                :jump-to-captured t
                                :empty-lines-before 1
                                :empty-lines-after 1)
