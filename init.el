@@ -23,6 +23,7 @@
 
 
 ;;;EMACS CUSTOM OPTIONS
+(setq fill-column 70)
 (add-hook 'dired-mode-hook 'dired-omit-mode); hide backup files
 (setq blink-cursor-blinks 0); never stop blinking 
 (column-number-mode t); show column number on mode line
@@ -91,31 +92,45 @@
 ;;;ORG
 ;;for taking notes very quickly
 ;(setq org-default-notes-file "~/org/notes.org")
+(add-hook 'org-mode-hook #'auto-fill-mode)
+;; M-q also calls this formating function
 
-(setq org-capture-templates '(("g" "Generic note" plain
-                               (file "~/org/notes/generic.org")
-                               "** %?\n%T\n%a\n-------------------------------------------------------------"
-                               :jump-to-captured t
-                               :empty-lines-before 1
-                               :empty-lines-after 1)
+(setq org-todo-keywords
+      '((sequence "TODO" "PROG" "DONE")))
 
-                              ("w" "Work note" plain
-                               (file+headline "~/org/notes/work.org" "Current")
-                               "** %?\n%T\n-------------------------------------------------------------"
-                               :jump-to-captured t
-                               :empty-lines-before 1
-                               :empty-lines-after 1)
+(defun org-summary-todo (n-done n-not-done)
+  "Switch entry to DONE when all subentries are done, to TODO otherwise."
+  (let (org-log-done org-todo-log-states)   ; turn off logging
+    (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
 
-                              ;; ("s" "Study note" plain
-                              ;;  (file+headline "~/org/notes/generic.org" "study")
-                              ;;  "pg: x\n _%x_ %?"
-                              ;;  :jump-to-captured t
-                              ;;  :empty-lines-before 1
-                              ;;  :empty-lines-after 1)
-                              
-                              ("t" "TODO" plain
-                               (file+headline "~/org/gtd/inbox.org" "New")
-                               "** TODO %?")))
+(add-hook 'org-after-todo-statistics-hook #'org-summary-todo)
+
+
+(setq org-capture-templates
+      '(("g" "Generic note" plain
+         (file "~/org/notes/generic.org")
+         "** %?\n%U\n%a\n-------------------------------------------------------------"
+         :jump-to-captured t
+         :empty-lines-before 1
+         :empty-lines-after 1)
+        
+        ("w" "Work note" plain
+         (file+headline "~/org/notes/work.org" "Current")
+         "** %?\n%U\n-------------------------------------------------------------"
+         :jump-to-captured t
+         :empty-lines-before 1
+         :empty-lines-after 1)
+        
+        ;; ("s" "Study note" plain
+        ;;  (file+headline "~/org/notes/generic.org" "study")
+        ;;  "pg: x\n _%x_ %?"
+        ;;  :jump-to-captured t
+        ;;  :empty-lines-before 1
+        ;;  :empty-lines-after 1)
+        
+        ("t" "TODO" plain
+         (file+headline "~/org/gtd/inbox.org" "New")
+         "** TODO %?")))
 
 (define-key global-map (kbd "C-c c" )'org-capture)
 
