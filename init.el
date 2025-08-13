@@ -47,6 +47,7 @@
 (add-hook 'emacs-lisp-mode-hook 'display-line-numbers-mode)
 (add-hook 'c-mode-hook 'display-line-numbers-mode)
 (add-hook 'python-mode-hook 'display-line-numbers-mode)
+(add-hook 'sh-mode-hook 'display-line-numbers-mode)
 
 
 ;;;KEY BINDINGS
