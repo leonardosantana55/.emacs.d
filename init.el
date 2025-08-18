@@ -43,6 +43,7 @@
 (electric-pair-mode t) ; Match parenthesis
 (set-face-attribute 'default nil :font "Noto Sans Mono" :height 120)
 
+
 (add-hook 'lisp-mode-hook 'display-line-numbers-mode)
 (add-hook 'emacs-lisp-mode-hook 'display-line-numbers-mode)
 (add-hook 'c-mode-hook 'display-line-numbers-mode)
@@ -91,10 +92,21 @@
 
 
 ;;;ORG
-;;for taking notes very quickly
-;(setq org-default-notes-file "~/org/notes.org")
+
+;;breaks lines automatically
 (add-hook 'org-mode-hook #'auto-fill-mode)
-;; M-q also calls this formating function
+
+;;automaticaly change to overview when entering some files
+(add-hook 'find-file-hook
+          (lambda ()
+            (let ((file-names (list
+                               "projects.org"
+                               "inbox.org")))
+              (when (member
+                     (buffer-last-name)
+                     file-names)
+                (org-cycle-global)))))
+
 
 (setq org-todo-keywords
       '((sequence "TODO" "PROG" "DONE")))
