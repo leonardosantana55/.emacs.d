@@ -111,6 +111,10 @@
 (setq org-todo-keywords
       '((sequence "TODO" "PROG" "DONE")))
 
+(setq org-todo-keyword-faces
+      '(("PROG" . "yellow")))
+
+
 (defun org-summary-todo (n-done n-not-done)
   "Switch entry to DONE when all subentries are done, to TODO otherwise."
   (let (org-log-done org-todo-log-states)   ; turn off logging
@@ -208,6 +212,11 @@
 (add-hook 'lisp-mode-hook
 	  (lambda ()
             (keymap-local-set "C-c s s" #'open-slime-and-go-back)))
+
+;;todo clear repl
+;;go to buffer named *slime-repl sbcl*
+;; slime-repl-clear-buffer
+;; go back to original windows
 
 
 ;;;COMPANY CONFIG
