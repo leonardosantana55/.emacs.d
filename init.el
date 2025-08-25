@@ -156,7 +156,9 @@
   (interactive)
   (dired "~/org"))
 
-(define-key global-map (kbd "<f9>") 'my-orgd)
+(define-key global-map (kbd "<f9>") 'bookmark-bmenu-list)
+;; C-x r m createas a new bookmark
+
 
 (defun my-notesd ()
   (interactive)
@@ -199,9 +201,6 @@
 (require 'slime-autoloads)
 (slime-setup '(slime-fancy slime-company))
 
-(add-hook 'lisp-mode-hook
-	  (lambda () (keymap-local-set "C-c e b" #'slime-eval-buffer)))
-
 (defun open-slime-and-go-back ()
   "Start slime and return focus to original window."
   (interactive)
@@ -209,9 +208,21 @@
     (slime)
     (select-window original-window)))
 
+(defun clear-slime-and-go-back ()
+  "clear slime and return focus to original window."
+  (interactive)
+  (let ((original-window (selected-window)))
+    (other-window 1)
+    (slime-repl-clear-buffer)
+    (select-window original-window)))
+
 (add-hook 'lisp-mode-hook
 	  (lambda ()
+            (keymap-local-set "<f7>" #'clear-slime-and-go-back)
+            (keymap-local-set "<f6>" #'slime-eval-buffer)
+            (keymap-local-set "<f5>" #'slime-eval-defun)
             (keymap-local-set "C-c s s" #'open-slime-and-go-back)))
+
 
 ;;todo clear repl
 ;;go to buffer named *slime-repl sbcl*
