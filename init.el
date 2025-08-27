@@ -93,6 +93,9 @@
 
 ;;;ORG
 
+;;stops org from auto creating bookmarks
+(setq org-bookmark-names-plist nil)
+
 ;;breaks lines automatically
 (add-hook 'org-mode-hook #'auto-fill-mode)
 
@@ -151,10 +154,14 @@
 
 (define-key global-map (kbd "C-c c" )'org-capture)
 
-;;dired
-(defun my-orgd ()
-  (interactive)
-  (dired "~/org"))
+;;DIRED
+
+(keymap-global-set
+ "C-x C-d"
+ (lambda ()
+   (interactive)
+   (dired ".")))
+
 
 (define-key global-map (kbd "<f9>") 'bookmark-bmenu-list)
 ;; C-x r m createas a new bookmark
