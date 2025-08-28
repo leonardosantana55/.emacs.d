@@ -104,7 +104,7 @@
           (lambda ()
             (let ((file-names (list
                                "projects.org"
-                               "inbox.org")))
+                               "tasks.org")))
               (when (member
                      (buffer-last-name)
                      file-names)
@@ -154,6 +154,12 @@
 
 (define-key global-map (kbd "C-c c" )'org-capture)
 
+(setq org-refile-targets
+       '(("~/org/gtd/projects.org" :maxlevel . 1)
+         ("~/org/gtd/tasks.org" :maxlevel . 1)
+         ("~/org/gtd/someday.org" :maxlevel . 1)
+         (nil :maxlevel . 1)))
+
 ;;DIRED
 
 (keymap-global-set
@@ -172,35 +178,6 @@
   (dired "~/notes/"))
 
 ;(setq org-refile-use-outline-path 'file)
-
-(setq org-refile-targets
-       '(("~/org/gtd/projects.org" :maxlevel . 1)
-         ("~/org/gtd/someday.org" :maxlevel . 1)
-         (nil :maxlevel . 1)))
-;;refile
-;;this is better for maintence
-;(setq org-agenda-files (list "~/org/gtd/projects.org"
-;                             "~/org/gtd/someday.org"))
-
-;(setq org-refile-targets '((org-agenda-files :maxlevel . 1)))
-
-;;this has no advantages
-;; (setq org-agenda-files (list "~/org/notes/studies/"))
-
-;; (setq org-refile-targets '(("~/org/gtd/projects.org" :maxlevel . 1)
-;;                            ("~/org/gtd/someday.org" :maxlevel . 1)
-;;                            (nil :maxlevel . 1)
-;;                            (org-agenda-files :maxlevel . 1)))
-
-;;this is better for more explicit locations
-;; (setq org-refile-targets
-;;       (append
-;;        '(("~/org/gtd/projects.org" :maxlevel . 1)
-;;          ("~/org/gtd/someday.org" :maxlevel . 1)
-;;          (nil :maxlevel . 1))
-;;        (mapcar (lambda (file)
-;;                  (cons (concat "~/org/notes/studies/" file) '(:maxlevel . 1)))
-;;                (directory-files "~/org/notes/studies/" nil "\\.org$"))))
 
 
 ;;;SLIME
