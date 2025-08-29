@@ -261,12 +261,9 @@
 (evil-set-initial-state 'Info-mode 'emacs)
 (evil-set-initial-state 'help-mode 'emacs)
 
+;; custom keybidings for evil
+(define-key evil-insert-state-map (kbd "C-h") 'left-char)
+(define-key evil-insert-state-map (kbd "C-j") 'next-line)
+(define-key evil-insert-state-map (kbd "C-k") 'previous-line)
+(define-key evil-insert-state-map (kbd "C-l") 'right-char)
 
-;; TODO: create a command that plays the M-! with the arguments
-;; git add (current-file) && git commit -m "up" && git xpushx
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
