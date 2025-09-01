@@ -7,7 +7,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
- '(custom-enabled-themes '(modus-vivendi my-wombat))
+ '(custom-enabled-themes '(modus-vivendi))
  '(custom-safe-themes
    '("0279bed8db57df6f093b2f143d45934320532b99ec212a4a9c59d0484934763c"
      "90903f9847cdccac16cc658dd06ae8906bccdf73327952d17b65633d9508fa71"
@@ -115,7 +115,7 @@
       '((sequence "TODO" "PROG" "DONE")))
 
 (setq org-todo-keyword-faces
-      '(("PROG" . "yellow")))
+      '(("PROG" . "orange")))
 
 
 (defun org-summary-todo (n-done n-not-done)
