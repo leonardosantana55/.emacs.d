@@ -15,7 +15,6 @@
      "fc809f7a044fefc09dbacf8170083a7957c21d53e1a0cc3146fcfe5d65747f9c"
      default))
  '(menu-bar-mode nil)
- '(org-agenda-files nil t)
  '(package-selected-packages
    '(ac-slime cl-libify company-anaconda elpy elpygen evil paredit
               rainbow-delimiters slime-company))
@@ -93,6 +92,8 @@
 
 ;;;ORG
 
+(setq org-agenda-files '("~/org"))
+
 ;;stops org from auto creating bookmarks
 (setq org-bookmark-names-plist nil)
 
@@ -131,6 +132,7 @@
          (file "~/org/notes/generic.org")
          "** %?\n%U\n%a\n-------------------------------------------------------------"
          :jump-to-captured t
+         :prepend t
          :empty-lines-before 1
          :empty-lines-after 1)
         
