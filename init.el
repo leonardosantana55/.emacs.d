@@ -91,7 +91,6 @@
 
 
 ;;;ORG
-
 (setq org-agenda-files '("~/org"))
 
 ;;stops org from auto creating bookmarks
@@ -163,23 +162,16 @@
          (nil :maxlevel . 1)))
 
 ;;DIRED
-
 (keymap-global-set
  "C-x C-d"
  (lambda ()
    (interactive)
    (dired ".")))
 
-
 (define-key global-map (kbd "<f9>") 'bookmark-bmenu-list)
 ;; C-x r m createas a new bookmark
 
-
-(defun my-notesd ()
-  (interactive)
-  (dired "~/notes/"))
-
-;(setq org-refile-use-outline-path 'file)
+(add-hook 'ibuffer-mode-hook 'ibuffer-do-sort-by-recency); hide backup files
 
 
 ;;;SLIME
