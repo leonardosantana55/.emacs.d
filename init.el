@@ -91,6 +91,10 @@
 
 
 ;;;ORG
+
+;; refile adds items to the top
+(setq org-reverse-note-order t)
+
 (setq org-agenda-files '("~/org"))
 
 ;;stops org from auto creating bookmarks
