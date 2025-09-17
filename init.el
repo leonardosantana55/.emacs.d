@@ -16,8 +16,8 @@
      default))
  '(menu-bar-mode nil)
  '(package-selected-packages
-   '(ac-slime cl-libify company-anaconda elpy elpygen evil paredit
-              rainbow-delimiters slime-company))
+   '(ac-slime cl-libify company-anaconda ein elpy elpygen evil jupyter
+              paredit rainbow-delimiters slime-company))
  '(tool-bar-mode nil))
 
 
@@ -265,3 +265,9 @@
 (define-key evil-insert-state-map (kbd "C-k") 'previous-line)
 (define-key evil-insert-state-map (kbd "C-l") 'right-char)
 
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
