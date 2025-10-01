@@ -79,7 +79,7 @@
   (async-shell-command
    (format "cd %s && git add init.el && git commit -m \"auto\" && git push"
            (expand-file-name "~/.emacs.d/")))
-  (shell-command
+  (async-shell-command
    (format "cd %s && git add . && git commit -m \"auto\" && git push"
            (expand-file-name "~/org/"))))
 (keymap-global-set "C-c g p a" #'my-git-push-init-and-org)
@@ -182,13 +182,13 @@
 
 (add-hook 'ibuffer-mode-hook 'ibuffer-do-sort-by-recency); hide backup files
 
-;; (add-hook 'minibuffer-setup-hook
-;; 	  (lambda ()
-;;             (keymap-local-set "<up>" #'minibuffer-previous-completion)
-;;             (keymap-local-set "S-<tab>" #'minibuffer-previous-completion)
-;;             (keymap-local-set "<tab>" #'minibuffer-next-completion)
-;;             (keymap-local-set "C-<tab>" #'self-insert-command)
-;;             (keymap-local-set "<down>" #'minibuffer-next-completion)))
+(add-hook 'minibuffer-setup-hook
+	  (lambda ()
+            (keymap-local-set "<up>" #'minibuffer-previous-completion)
+            (keymap-local-set "S-<tab>" #'minibuffer-previous-completion)
+            (keymap-local-set "<tab>" #'minibuffer-next-completion)
+            (keymap-local-set "C-<tab>" #'minibuffer-complete)
+            (keymap-local-set "<down>" #'minibuffer-next-completion)))
 
 
 ;; (defun my-sort-buffers-by-access-time (completions)
