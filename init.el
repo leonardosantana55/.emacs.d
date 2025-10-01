@@ -22,6 +22,7 @@
 
 
 ;;;EMACS CUSTOM OPTIONS
+(global-unset-key (kbd "C-v")); stop emacs from moving the screen when i make a mistake
 (setq fill-column 70)
 (add-hook 'dired-mode-hook 'dired-omit-mode); hide backup files
 (setq blink-cursor-blinks 0); never stop blinking 
@@ -175,7 +176,33 @@
 (define-key global-map (kbd "<f9>") 'bookmark-bmenu-list)
 ;; C-x r m createas a new bookmark
 
+
+;; BUFFERS
+(keymap-global-set "C-x C-b" 'switch-to-buffer)
+
 (add-hook 'ibuffer-mode-hook 'ibuffer-do-sort-by-recency); hide backup files
+
+;; (add-hook 'minibuffer-setup-hook
+;; 	  (lambda ()
+;;             (keymap-local-set "<up>" #'minibuffer-previous-completion)
+;;             (keymap-local-set "S-<tab>" #'minibuffer-previous-completion)
+;;             (keymap-local-set "<tab>" #'minibuffer-next-completion)
+;;             (keymap-local-set "C-<tab>" #'self-insert-command)
+;;             (keymap-local-set "<down>" #'minibuffer-next-completion)))
+
+
+;; (defun my-sort-buffers-by-access-time (completions)
+;;   "Sort completion candidates (buffer names) by most recent access."
+;;   (let ((buffers (mapcar #'get-buffer completions)))
+;;     (mapcar #'buffer-name
+;;             (sort buffers
+;;                   (lambda (b1 b2)
+;;                     (time-less-p (buffer-local-value 'buffer-display-time b2)
+;;                                  (buffer-local-value 'buffer-display-time b1)))))))
+
+(setq completions-sort #'historical)
+
+(setq completions-max-height 9)
 
 
 ;;;SLIME
@@ -226,19 +253,25 @@
                 (interactive)
                 (company-select-previous))))
 
-(setq company-tooltip-align-annotations t
-      company-tooltip-offset-display 'lines
-      company-minimum-prefix-length 0
-      company-idle-delay nil
-      company-lighter-base t
-      company-global-modes '(not erc-mode message-mode eshell-mode)
-      company-frontends '(company-pseudo-tooltip-frontend
-			  company-preview-frontend
-			  company-echo-metadata-frontend))
+(setq
+ company-selection-wrap-around t
+ company-tooltip-flip-when-above t
+ company-tooltip-align-annotations t
+ company-tooltip-offset-display 'lines
+ company-minimum-prefix-length 0
+ company-idle-delay nil
+ company-lighter-base t
+ company-global-modes '(not erc-mode message-mode eshell-mode)
+ company-frontends '(company-pseudo-tooltip-frontend
+		     company-preview-frontend
+		     company-echo-metadata-frontend))
 
-(eval-after-load "company"
-  '(add-to-list 'company-backends 'company-anaconda))
-(add-hook 'python-mode-hook 'anaconda-mode)
+;; (eval-after-load "company"
+;;   '(add-to-list 'company-backends 'company-anaconda))
+;; (add-hook 'python-mode-hook 'anaconda-mode)
+
+(with-eval-after-load 'company
+  (add-to-list 'company-backends 'company-capf))
 
 
 ;;;EVIL MODE
