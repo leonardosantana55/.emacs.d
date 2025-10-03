@@ -8,12 +8,6 @@
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
  '(custom-enabled-themes '(modus-vivendi))
- '(custom-safe-themes
-   '("0279bed8db57df6f093b2f143d45934320532b99ec212a4a9c59d0484934763c"
-     "90903f9847cdccac16cc658dd06ae8906bccdf73327952d17b65633d9508fa71"
-     "e5c58b45a93d2f9f87e727d8d2b17ce7ba792d12cee6ecef6e27b5b2ea25c60e"
-     "fc809f7a044fefc09dbacf8170083a7957c21d53e1a0cc3146fcfe5d65747f9c"
-     default))
  '(menu-bar-mode nil)
  '(package-selected-packages
    '(ac-slime cl-libify company-anaconda ein elpy elpygen evil jupyter
@@ -22,6 +16,8 @@
 
 
 ;;;EMACS CUSTOM OPTIONS
+(define-key global-map (kbd "<f9>") 'bookmark-bmenu-list); C-x r m createas a new bookmark
+(setq ring-bell-function 'ignore)
 (global-unset-key (kbd "C-v")); stop emacs from moving the screen when i make a mistake
 (setq fill-column 70)
 (add-hook 'dired-mode-hook 'dired-omit-mode); hide backup files
@@ -166,6 +162,7 @@
          ("~/org/gtd/someday.org" :maxlevel . 1)
          (nil :maxlevel . 1)))
 
+
 ;;DIRED
 (keymap-global-set
  "C-x C-d"
@@ -173,8 +170,7 @@
    (interactive)
    (dired ".")))
 
-(define-key global-map (kbd "<f9>") 'bookmark-bmenu-list)
-;; C-x r m createas a new bookmark
+(setq dired-listing-switches "-vAFla")
 
 
 ;; BUFFERS
