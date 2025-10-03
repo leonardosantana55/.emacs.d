@@ -172,6 +172,35 @@
 
 (setq dired-listing-switches "-vAFla")
 
+(defun goto-and-kill-dired ()
+    (interactive)
+    (let ((buffer-name (buffer-name)))
+      (dired-find-file)
+      (kill-buffer buffer-name)))
+
+(add-hook 'dired-mode-hook
+          (lambda ()
+            (keymap-local-set "RET" #'goto-and-kill-dired)))
+
+
+;;BOOKMARKS
+(define-key global-map (kbd "<f9>") 'bookmark-bmenu-list)
+;; C-x r m createas a new bookmark
+(defun kill-buffer-bookmark ()
+  (interactive)
+  (kill-buffer (buffer-name)))
+
+(defun goto-and-kill-bookmark ()
+    (interactive)
+    (let ((buffer-name (buffer-name)))
+      (bookmark-bmenu-this-window)
+      (kill-buffer buffer-name)))
+
+(add-hook 'bookmark-bmenu-mode-hook
+	  (lambda ()
+            (keymap-local-set "RET" #'goto-and-kill-bookmark)
+            (keymap-local-set "<f9>" #'kill-buffer-bookmark)))
+
 
 ;; BUFFERS
 (keymap-global-set "C-x C-b" 'switch-to-buffer)
