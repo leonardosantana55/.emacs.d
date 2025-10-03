@@ -16,7 +16,6 @@
 
 
 ;;;EMACS CUSTOM OPTIONS
-(define-key global-map (kbd "<f9>") 'bookmark-bmenu-list); C-x r m createas a new bookmark
 (setq ring-bell-function 'ignore)
 (global-unset-key (kbd "C-v")); stop emacs from moving the screen when i make a mistake
 (setq fill-column 70)
