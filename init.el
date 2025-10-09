@@ -22,9 +22,9 @@
 (add-hook 'dired-mode-hook 'dired-omit-mode); hide backup files
 (setq blink-cursor-blinks 0); never stop blinking 
 (column-number-mode t); show column number on mode line
-(icomplete-mode 1); show completion on the minibuffer
+;; (icomplete-mode 1); show completion on the minibuffer
 (setq completions-format 'one-column); or 'horizontal, or 'one-column
-(setq completion-auto-select 'second-tab); Focus on completions buffer 
+;; (setq completion-auto-select 'second-tab); Focus on completions buffer 
 (setq cursor-in-non-selected-windows nil) ; show cursor only in the active window
 (setq-default indent-tabs-mode nil); Use spaces, not tabs, for indentation.
 (setq doc-view-scale-internally t)
@@ -203,16 +203,26 @@
 
 ;; BUFFERS
 (keymap-global-set "C-x C-b" 'switch-to-buffer)
-
 (add-hook 'ibuffer-mode-hook 'ibuffer-do-sort-by-recency); hide backup files
+
+;;MIBIBUFFER
+(icomplete-vertical-mode t)
+(fido-vertical-mode t)
+(advice-add 'completion-at-point :after #'minibuffer-hide-completions)
+(setq completion-auto-help nil)
 
 (add-hook 'minibuffer-setup-hook
 	  (lambda ()
-            (keymap-local-set "<up>" #'minibuffer-previous-completion)
-            (keymap-local-set "S-<tab>" #'minibuffer-previous-completion)
-            (keymap-local-set "<tab>" #'minibuffer-next-completion)
-            (keymap-local-set "C-<tab>" #'minibuffer-complete)
-            (keymap-local-set "<down>" #'minibuffer-next-completion)))
+            (keymap-local-set "RET" #'icomplete-force-complete-and-exit)
+            (keymap-local-set "TAB" #'icomplete-force-complete)))
+
+;; (add-hook 'minibuffer-setup-hook
+;; 	  (lambda ()
+;;             (keymap-local-set "<up>" #'minibuffer-previous-completion)
+;;             (keymap-local-set "S-<tab>" #'minibuffer-previous-completion)
+;;             (keymap-local-set "<tab>" #'minibuffer-next-completion)
+;;             (keymap-local-set "C-<tab>" #'minibuffer-complete)
+;;             (keymap-local-set "<down>" #'minibuffer-next-completion)))
 
 
 ;; (defun my-sort-buffers-by-access-time (completions)
