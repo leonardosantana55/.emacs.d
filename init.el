@@ -16,6 +16,7 @@
 
 
 ;;;EMACS CUSTOM OPTIONS
+(which-key-mode)
 (setq ring-bell-function 'ignore)
 (global-unset-key (kbd "C-v")); stop emacs from moving the screen when i make a mistake
 (setq fill-column 70)
