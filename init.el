@@ -20,7 +20,6 @@
 (setq ring-bell-function 'ignore)
 (global-unset-key (kbd "C-v")); stop emacs from moving the screen when i make a mistake
 (setq fill-column 70)
-(add-hook 'dired-mode-hook 'dired-omit-mode); hide backup files
 (setq blink-cursor-blinks 0); never stop blinking 
 (column-number-mode t); show column number on mode line
 ;; (icomplete-mode 1); show completion on the minibuffer
@@ -164,6 +163,10 @@
 
 
 ;;DIRED
+
+(add-hook 'dired-mode-hook 'dired-omit-mode); hide backup files
+(add-hook 'dired-mode-hook 'hl-line-mode); highligths line in dired
+
 (keymap-global-set
  "C-x C-d"
  (lambda ()
@@ -322,7 +325,7 @@
 (evil-mode 1)
 
 ;; evil is not optimal for some modes
-(setq evil-default-state 'insert)
+(setq evil-default-state 'normal)
 (evil-set-initial-state 'electric-buffer-menu-mode 'emacs)
 (evil-set-initial-state 'Info-mode 'emacs)
 (evil-set-initial-state 'help-mode 'emacs)
