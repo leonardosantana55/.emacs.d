@@ -37,6 +37,8 @@
 (setq help-window-select t)  ; Switch focus to help buffers automatically
 (electric-pair-mode t) ; Match parenthesis
 (set-face-attribute 'default nil :font "Noto Sans Mono" :height 120)
+(set-face-attribute 'italic nil :family "Noto Mono" :slant 'italic :height 120)
+
 
 
 (add-hook 'lisp-mode-hook 'display-line-numbers-mode)
@@ -87,6 +89,7 @@
 
 
 ;;;ORG
+(setq org-hide-emphasis-markers t)
 
 ;; refile adds items to the top
 (setq org-reverse-note-order t)
@@ -163,9 +166,9 @@
 
 
 ;;DIRED
-
 (add-hook 'dired-mode-hook 'dired-omit-mode); hide backup files
 (add-hook 'dired-mode-hook 'hl-line-mode); highligths line in dired
+(add-hook 'dired-mode-hook 'dired-hide-details-mode); bound to "("
 
 (keymap-global-set
  "C-x C-d"
@@ -183,7 +186,8 @@
 
 (add-hook 'dired-mode-hook
           (lambda ()
-            (keymap-local-set "RET" #'goto-and-kill-dired)))
+            (keymap-local-set "RET" #'goto-and-kill-dired)
+            (keymap-local-set "C-<return>" #'dired-find-file)))
 
 
 ;;BOOKMARKS
@@ -202,6 +206,11 @@
 (add-hook 'bookmark-bmenu-mode-hook
 	  (lambda ()
             (keymap-local-set "RET" #'goto-and-kill-bookmark)
+            (keymap-local-set "C-<return>" #'bookmark-bmenu-this-window)
+            (keymap-local-set "h" #'evil-backward-char)
+            (keymap-local-set "j" #'evil-next-line)
+            (keymap-local-set "k" #'evil-previous-line)
+            (keymap-local-set "l" #'evil-forward-char)
             (keymap-local-set "<f9>" #'kill-buffer-bookmark)))
 
 
