@@ -17,35 +17,36 @@
 
 ;;;EMACS CUSTOM OPTIONS
 (which-key-mode)
-(setq ring-bell-function 'ignore)
-(global-unset-key (kbd "C-v")); stop emacs from moving the screen when i make a mistake
-(setq fill-column 70)
-(setq blink-cursor-blinks 0); never stop blinking 
+(tab-bar-mode)
+(scroll-bar-mode -1); hide scroll bar
+(electric-pair-mode t) ; Match parenthesis
 (column-number-mode t); show column number on mode line
-;; (icomplete-mode 1); show completion on the minibuffer
-(setq completions-format 'one-column); or 'horizontal, or 'one-column
-;; (setq completion-auto-select 'second-tab); Focus on completions buffer 
-(setq cursor-in-non-selected-windows nil) ; show cursor only in the active window
+
+(global-unset-key (kbd "C-v")); stop emacs from moving when i make a mistake
+
+(setq ring-bell-function 'ignore)
+(setq tab-width 4)
 (setq-default indent-tabs-mode nil); Use spaces, not tabs, for indentation.
+(setq fill-column 80)
+(setq blink-cursor-blinks 0); never stop blinking 
+(setq completions-format 'one-column); or 'horizontal, or 'one-column
+(setq cursor-in-non-selected-windows nil) ; show cursor only in the active window
 (setq doc-view-scale-internally t)
 (setq doc-view-resolution 300)
-(scroll-bar-mode -1); hide scroll bar
 (setq scroll-margin 4)
 (setq scroll-step 1)
 (setq inhibit-startup-screen t)
-(setq dired-kill-when-opening-new-dired-buffer 1)
 (setq help-window-select t)  ; Switch focus to help buffers automatically
-(electric-pair-mode t) ; Match parenthesis
+
 (set-face-attribute 'default nil :font "Noto Sans Mono" :height 120)
 (set-face-attribute 'italic nil :family "Noto Mono" :slant 'italic :height 120)
-
-
 
 (add-hook 'lisp-mode-hook 'display-line-numbers-mode)
 (add-hook 'emacs-lisp-mode-hook 'display-line-numbers-mode)
 (add-hook 'c-mode-hook 'display-line-numbers-mode)
 (add-hook 'python-mode-hook 'display-line-numbers-mode)
 (add-hook 'sh-mode-hook 'display-line-numbers-mode)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 ;;;KEY BINDINGS
@@ -56,6 +57,7 @@
  (lambda ()
    (interactive)
    (load-file (expand-file-name "~/.emacs.d/init.el"))))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 ;;GIT
@@ -80,27 +82,23 @@
    (format "cd %s && git add . && git commit -m \"auto\" && git push"
            (expand-file-name "~/org/"))))
 (keymap-global-set "C-c g p a" #'my-git-push-init-and-org)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 ;;;PACKAGE MANAGER
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 ;;;ORG
 (setq org-hide-emphasis-markers t)
-
-;; refile adds items to the top
-(setq org-reverse-note-order t)
-
+(setq org-reverse-note-order t) ;; refile adds items to the top
 (setq org-agenda-files '("~/org"))
+(setq org-bookmark-names-plist nil) ;;stops org from auto creating bookmarks
 
-;;stops org from auto creating bookmarks
-(setq org-bookmark-names-plist nil)
-
-;;breaks lines automatically
-(add-hook 'org-mode-hook #'auto-fill-mode)
+(add-hook 'org-mode-hook #'auto-fill-mode) ;;breaks lines automatically
 
 ;;automaticaly change to overview when entering some files
 (add-hook 'find-file-hook
@@ -113,13 +111,11 @@
                      file-names)
                 (org-cycle-global)))))
 
-
 (setq org-todo-keywords
       '((sequence "TODO" "PROG" "DONE")))
 
 (setq org-todo-keyword-faces
       '(("PROG" . "orange")))
-
 
 (defun org-summary-todo (n-done n-not-done)
   "Switch entry to DONE when all subentries are done, to TODO otherwise."
@@ -127,7 +123,6 @@
     (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
 
 (add-hook 'org-after-todo-statistics-hook #'org-summary-todo)
-
 
 (setq org-capture-templates
       '(("g" "Generic note" plain
@@ -145,13 +140,6 @@
          :empty-lines-before 1
          :empty-lines-after 1)
         
-        ;; ("s" "Study note" plain
-        ;;  (file+headline "~/org/notes/generic.org" "study")
-        ;;  "pg: x\n _%x_ %?"
-        ;;  :jump-to-captured t
-        ;;  :empty-lines-before 1
-        ;;  :empty-lines-after 1)
-        
         ("t" "TODO" plain
          (file+headline "~/org/gtd/inbox.org" "New")
          "** TODO %?")))
@@ -163,9 +151,12 @@
          ("~/org/gtd/tasks.org" :maxlevel . 1)
          ("~/org/gtd/someday.org" :maxlevel . 1)
          (nil :maxlevel . 1)))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 ;;DIRED
+(setq dired-kill-when-opening-new-dired-buffer 1)
+
 (add-hook 'dired-mode-hook 'dired-omit-mode); hide backup files
 (add-hook 'dired-mode-hook 'hl-line-mode); highligths line in dired
 (add-hook 'dired-mode-hook 'dired-hide-details-mode); bound to "("
@@ -188,6 +179,7 @@
           (lambda ()
             (keymap-local-set "RET" #'goto-and-kill-dired)
             (keymap-local-set "C-<return>" #'dired-find-file)))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 ;;BOOKMARKS
@@ -212,11 +204,14 @@
             (keymap-local-set "k" #'evil-previous-line)
             (keymap-local-set "l" #'evil-forward-char)
             (keymap-local-set "<f9>" #'kill-buffer-bookmark)))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 ;; BUFFERS
 (keymap-global-set "C-x C-b" 'switch-to-buffer)
 (add-hook 'ibuffer-mode-hook 'ibuffer-do-sort-by-recency); hide backup files
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 
 ;;MIBIBUFFER
 (icomplete-vertical-mode t)
@@ -229,30 +224,12 @@
             (keymap-local-set "RET" #'icomplete-force-complete-and-exit)
             (keymap-local-set "TAB" #'icomplete-force-complete)))
 
-;; (add-hook 'minibuffer-setup-hook
-;; 	  (lambda ()
-;;             (keymap-local-set "<up>" #'minibuffer-previous-completion)
-;;             (keymap-local-set "S-<tab>" #'minibuffer-previous-completion)
-;;             (keymap-local-set "<tab>" #'minibuffer-next-completion)
-;;             (keymap-local-set "C-<tab>" #'minibuffer-complete)
-;;             (keymap-local-set "<down>" #'minibuffer-next-completion)))
-
-
-;; (defun my-sort-buffers-by-access-time (completions)
-;;   "Sort completion candidates (buffer names) by most recent access."
-;;   (let ((buffers (mapcar #'get-buffer completions)))
-;;     (mapcar #'buffer-name
-;;             (sort buffers
-;;                   (lambda (b1 b2)
-;;                     (time-less-p (buffer-local-value 'buffer-display-time b2)
-;;                                  (buffer-local-value 'buffer-display-time b1)))))))
-
 (setq completions-sort #'historical)
-
 (setq completions-max-height 9)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-;;;SLIME
+;;SLIME
 (setq inferior-lisp-program "sbcl")
 (require 'slime-autoloads)
 (slime-setup '(slime-fancy slime-company))
@@ -278,16 +255,11 @@
             (keymap-local-set "<f6>" #'slime-eval-buffer)
             (keymap-local-set "<f5>" #'slime-eval-defun)
             (keymap-local-set "C-c s s" #'open-slime-and-go-back)))
-
-
-;;todo clear repl
-;;go to buffer named *slime-repl sbcl*
-;; slime-repl-clear-buffer
-;; go back to original windows
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 ;;;COMPANY CONFIG
-(add-hook 'after-init-hook 'global-company-mode) ;company starts when emacs boots
+(add-hook 'after-init-hook 'global-company-mode);;company starts at boot
 
 (keymap-global-set "C-<tab>" 'company-complete)
 (with-eval-after-load 'company
@@ -313,12 +285,9 @@
 		     company-preview-frontend
 		     company-echo-metadata-frontend))
 
-;; (eval-after-load "company"
-;;   '(add-to-list 'company-backends 'company-anaconda))
-;; (add-hook 'python-mode-hook 'anaconda-mode)
-
 (with-eval-after-load 'company
   (add-to-list 'company-backends 'company-capf))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 ;;;EVIL MODE
@@ -344,6 +313,13 @@
 (define-key evil-insert-state-map (kbd "C-j") 'next-line)
 (define-key evil-insert-state-map (kbd "C-k") 'previous-line)
 (define-key evil-insert-state-map (kbd "C-l") 'right-char)
+(define-key evil-normal-state-map (kbd "-") 'evil-end-of-line)
+(define-key evil-visual-state-map (kbd "-") #'(lambda ()
+                                                (interactive)
+                                                (evil-end-of-line)
+                                                (evil-backward-char)))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
