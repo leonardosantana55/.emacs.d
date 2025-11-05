@@ -14,6 +14,7 @@
  '(tool-bar-mode nil))
 
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;EMACS CUSTOM OPTIONS
 (which-key-mode)
@@ -44,6 +45,7 @@
 (add-hook 'lisp-mode-hook 'display-line-numbers-mode)
 (add-hook 'emacs-lisp-mode-hook 'display-line-numbers-mode)
 (add-hook 'c-mode-hook 'display-line-numbers-mode)
+(add-hook 'c-mode-hook (lambda () (c-set-style 'k&r)))
 (add-hook 'python-mode-hook 'display-line-numbers-mode)
 (add-hook 'sh-mode-hook 'display-line-numbers-mode)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -217,6 +219,11 @@
 ;; BUFFERS
 (keymap-global-set "C-x C-b" 'switch-to-buffer)
 (add-hook 'ibuffer-mode-hook 'ibuffer-do-sort-by-recency); hide backup files
+
+(defun my-kill-buffer-path ()
+  (interactive)
+  (when (buffer-file-name)
+    (kill-new (concat "cd " "\"" (file-name-directory (buffer-file-name)) "\""))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -304,6 +311,8 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;QUICKCOMPANY
+(unless (package-installed-p 'company-quickhelp)
+  (package-install 'company-quickhelp))
 (company-quickhelp-mode)
 (setq company-quickhelp-delay nil)
 (eval-after-load 'company
