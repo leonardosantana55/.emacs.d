@@ -7,7 +7,6 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
- '(custom-enabled-themes '(modus-vivendi))
  '(menu-bar-mode nil)
  '(package-selected-packages
    '(ac-slime cl-libify company-quickhelp evil slime-company))
@@ -17,6 +16,8 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;EMACS CUSTOM OPTIONS
+(savehist-mode 1)
+(push 'kill-ring savehist-additional-variables)
 (which-key-mode)
 (tab-bar-mode)
 (scroll-bar-mode -1); hide scroll bar
@@ -45,10 +46,35 @@
 (add-hook 'lisp-mode-hook 'display-line-numbers-mode)
 (add-hook 'emacs-lisp-mode-hook 'display-line-numbers-mode)
 (add-hook 'c-mode-hook 'display-line-numbers-mode)
-(add-hook 'c-mode-hook (lambda () (c-set-style 'k&r)))
+(add-hook 'c-mode-hook (lambda () (c-set-style "stroustrup")))
 (add-hook 'python-mode-hook 'display-line-numbers-mode)
 (add-hook 'sh-mode-hook 'display-line-numbers-mode)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;MODUS THEME
+(require-theme 'modus-themes)
+(setq modus-themes-bold-constructs t)
+(setq modus-themes-to-toggle (list 'modus-vivendi 'modus-operandi-tinted))
+;;(setq modus-vivendi-palette-overrides modus-themes-preset-overrides-faint)
+
+(setq modus-themes-common-palette-overrides
+    '((builtin blue-faint)
+        (comment fg-dim)
+        (constant fg-main)
+        (docstring fg-main)
+        (docmarkup fg-main)
+        (fnname red)
+        (keyword fg-main)
+        (preprocessor blue-faint)
+        (string green-intense)
+        (type fg-main)
+        (variable fg-main)
+        (rx-construct fg-main)
+        (rx-backslash fg-main)))
+
+(load-theme 'modus-vivendi)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
