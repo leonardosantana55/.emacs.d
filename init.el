@@ -59,7 +59,7 @@
 ;;(setq modus-vivendi-palette-overrides modus-themes-preset-overrides-faint)
 
 (setq modus-themes-common-palette-overrides
-    '((builtin blue-faint)
+    '((builtin yellow-faint)
         (comment fg-dim)
         (constant fg-main)
         (docstring fg-main)
@@ -78,8 +78,9 @@
         (bg-main bg-dim)
         ;;;(bg-completion bg-inactive)
         ;;;(bg-hl-line bg-dim)
-        ;;;(bg-paren-match)
-        (bg-region bg-paren-match)
+        (bg-paren-match red)
+        (fg-paren-match bg-main)
+        (bg-region blue-intense)
         (fg-region fg-main)
         (bg-mode-line-active bg-inactive)
         (border-mode-line-active fg-dim)
