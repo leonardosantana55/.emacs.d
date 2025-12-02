@@ -59,7 +59,7 @@
 ;;(setq modus-vivendi-palette-overrides modus-themes-preset-overrides-faint)
 
 (setq modus-themes-common-palette-overrides
-    '((builtin yellow-faint)
+    '((builtin magenta-warmer)
         (comment fg-dim)
         (constant fg-main)
         (docstring fg-main)
@@ -229,10 +229,11 @@
                 (org-cycle-global)))))
 
 (setq org-todo-keywords
-      '((sequence "TODO" "PROG" "DONE")))
+      '((sequence "TODO" "PROG" "WAIT" "DONE")))
 
 (setq org-todo-keyword-faces
-      '(("PROG" . "orange")))
+      '(("PROG" . "orange")
+        ("WAIT" . "cyan")))
 
 (defun org-summary-todo (n-done n-not-done)
   "Switch entry to DONE when all subentries are done, to TODO otherwise."
