@@ -45,7 +45,6 @@
 (add-hook 'lisp-mode-hook 'display-line-numbers-mode)
 (add-hook 'emacs-lisp-mode-hook 'display-line-numbers-mode)
 (add-hook 'c-mode-hook 'display-line-numbers-mode)
-(add-hook 'c-mode-hook (lambda () (c-set-style "stroustrup")))
 (add-hook 'python-mode-hook 'display-line-numbers-mode)
 (add-hook 'sh-mode-hook 'display-line-numbers-mode)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -461,6 +460,22 @@
                                                 (interactive)
                                                 (evil-end-of-line)
                                                 (evil-backward-char)))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;C
+(add-hook 'c-mode-hook (lambda () (c-set-style "stroustrup")))
+
+(defun c-save-and-compile()
+  (interactive)
+  (save-buffer)
+  (recompile))
+
+(add-hook 'c-mode-hook
+          (lambda ()
+            (keymap-local-set "<f5>" #'c-save-and-compile)
+            (keymap-local-set "<f7>" #'gud-gdb)))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
