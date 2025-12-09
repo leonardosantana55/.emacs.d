@@ -58,7 +58,7 @@
 ;;(setq modus-vivendi-palette-overrides modus-themes-preset-overrides-faint)
 
 (setq modus-themes-common-palette-overrides
-    '((builtin magenta-warmer)
+    '((builtin yellow-cooler)
         (comment fg-dim)
         (constant fg-main)
         (docstring fg-main)
