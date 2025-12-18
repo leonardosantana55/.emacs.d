@@ -360,6 +360,8 @@
 (setq inferior-lisp-program "sbcl")
 (require 'slime-autoloads)
 (slime-setup '(slime-fancy slime-company))
+(setq slime-contribs '(slime-fancy slime-asdf))
+
 
 (defun open-slime-and-go-back ()
   "Start slime and return focus to original window."
