@@ -493,11 +493,23 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
 (define-key evil-insert-state-map (kbd "C-j") 'next-line)
 (define-key evil-insert-state-map (kbd "C-k") 'previous-line)
 (define-key evil-insert-state-map (kbd "C-l") 'right-char)
-(define-key evil-normal-state-map (kbd "-") 'evil-end-of-line)
 (define-key evil-visual-state-map (kbd "-") #'(lambda ()
                                                 (interactive)
                                                 (evil-end-of-line)
                                                 (evil-backward-char)))
+
+
+(define-key evil-normal-state-map (kbd "}") #'(lambda ()
+                                                (interactive)
+                                                (evil-forward-paragraph)
+                                                (redraw-display)))
+(define-key evil-normal-state-map (kbd "{") #'(lambda ()
+                                                (interactive)
+                                                (evil-backward-paragraph)
+                                                (redraw-display)))
+
+(define-key evil-normal-state-map (kbd "-") 'evil-end-of-line)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
