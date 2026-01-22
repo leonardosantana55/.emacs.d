@@ -24,6 +24,8 @@
 (column-number-mode t); show column number on mode line
 (setq-default cursor-type '(bar . 2))
 
+(define-key global-map (kbd "<f9>") 'bookmark-bmenu-list)
+(define-key global-map (kbd "<f12>") 'vterm)
 (global-unset-key (kbd "C-v")); stop emacs from moving when i make a mistake
 
 (setq ring-bell-function 'ignore)
@@ -48,6 +50,23 @@
 (add-hook 'c-mode-hook 'display-line-numbers-mode)
 (add-hook 'python-mode-hook 'display-line-numbers-mode)
 (add-hook 'sh-mode-hook 'display-line-numbers-mode)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;WINDOW MANAGEMENT
+
+(add-to-list 'display-buffer-alist
+             '("\\*vterm*"
+               ;;(display-buffer-full-frame)
+               (display-buffer-at-bottom)
+               (window-height . 12)
+               ))
+
+
+;;or should i put this on the vterm section?
+;;TODO add a shortcut to open or to close depending on state.
+;;i want to open and close vterm with the same keystroke.
+;; https://www.reddit.com/r/emacs/comments/179t67l/window_management_share_your_displaybufferalist/
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -276,7 +295,7 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
 
 (setq org-capture-templates
       '(("g" "Generic note" plain
-         (file "~/org/notes/generic.org")
+         (file+headline "~/org/gtd/inbox.org" "Generic")
          "** %?\n%U\n%a\n-------------------------------------------------------------"
          :jump-to-captured t
          :prepend t
@@ -284,15 +303,19 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
          :empty-lines-after 1)
         
         ("w" "Work note" plain
-         (file+headline "~/org/notes/work.org" "Current")
+         (file+headline "~/org/gtd/inbox.org" "Work")
          "** %?\n%U\n-------------------------------------------------------------"
          :jump-to-captured t
+         :prepend t
          :empty-lines-before 1
          :empty-lines-after 1)
         
         ("t" "TODO" plain
-         (file+headline "~/org/gtd/inbox.org" "New")
-         "** TODO %?")))
+         (file+headline "~/org/gtd/inbox.org" "Todo")
+         "** TODO %?"
+         :prepend t
+         :empty-lines-before 1
+         :empty-lines-after 1)))
 
 (define-key global-map (kbd "C-c c" )'org-capture)
 
@@ -300,6 +323,9 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
        '(("~/org/gtd/projects.org" :maxlevel . 1)
          ("~/org/gtd/tasks.org" :maxlevel . 1)
          ("~/org/gtd/someday.org" :maxlevel . 1)
+         ("~/org/notes/generic.org" :maxlevel . 1)
+         ("~/org/notes/ideas.org" :maxlevel . 1)
+         ("~/org/notes/work.org" :maxlevel . 1)
          (nil :maxlevel . 1)))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -532,8 +558,8 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
 (use-package vterm
     :ensure t)
 (setq vterm-shell "/usr/bin/bash")
-(define-key global-map (kbd "<f9>") 'bookmark-bmenu-list)
 (define-key vterm-mode-map (kbd "<f9>") 'bookmark-bmenu-list)
+(define-key vterm-mode-map (kbd "<f12>") 'delete-window)
 ;;TODO colocar isso aqui pra abrir em baixo por padrão.
 
 
