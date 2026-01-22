@@ -15,7 +15,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;EMACS CUSTOM OPTIONS
-(setq initial-buffer-choice #'vterm)
 (savehist-mode 1)
 (push 'kill-ring savehist-additional-variables)
 (which-key-mode)
@@ -25,7 +24,6 @@
 (setq-default cursor-type '(bar . 2))
 
 (define-key global-map (kbd "<f9>") 'bookmark-bmenu-list)
-(define-key global-map (kbd "<f12>") 'vterm)
 (global-unset-key (kbd "C-v")); stop emacs from moving when i make a mistake
 
 (setq ring-bell-function 'ignore)
@@ -554,13 +552,20 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
             (keymap-local-set "<f7>" #'gud-gdb)))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;VTERM
 
-(use-package vterm
-    :ensure t)
-(setq vterm-shell "/usr/bin/bash")
-(define-key vterm-mode-map (kbd "<f9>") 'bookmark-bmenu-list)
-(define-key vterm-mode-map (kbd "<f12>") 'delete-window)
-;;TODO colocar isso aqui pra abrir em baixo por padrão.
+
+(if (eq system-type 'gnu/linux)
+    (progn
+      (use-package vterm
+        :ensure t)
+      (setq vterm-shell "/usr/bin/bash")
+      (define-key vterm-mode-map (kbd "<f9>") 'bookmark-bmenu-list)
+      (define-key vterm-mode-map (kbd "<f12>") 'delete-window)
+
+      (setq initial-buffer-choice #'vterm)
+      (define-key global-map (kbd "<f12>") 'vterm)))
 
 
 (custom-set-faces
@@ -569,3 +574,5 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+(eq system-type 'gnu/linux)
