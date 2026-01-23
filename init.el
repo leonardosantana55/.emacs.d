@@ -510,7 +510,7 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
 (evil-set-initial-state 'vterm-mode 'emacs)
 (evil-set-initial-state 'electric-buffer-menu-mode 'emacs)
 (evil-set-initial-state 'Info-mode 'emacs)
-(evil-set-initial-state 'help-mode 'emacs)
+(evil-set-initial-state 'help-mode 'motion)
 
 ;; custom keybidings for evil
 (define-key evil-insert-state-map (kbd "C-h") 'left-char)
