@@ -9,7 +9,8 @@
  '(column-number-mode t)
  '(menu-bar-mode nil)
  '(package-selected-packages
-   '(ac-slime cl-libify company-quickhelp evil slime-company vterm))
+   '(ac-slime cl-libify company-quickhelp dashboard dired-sidebar evil
+              helm-dash neotree slime-company vterm))
  '(tool-bar-mode nil))
 
 
@@ -575,4 +576,26 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
  ;; If there is more than one, they won't work right.
  )
 
-(eq system-type 'gnu/linux)
+
+;; (require 'dired-subtree)
+;; (use-package dired-sidebar
+;;   :bind (("C-x C-d" . dired-sidebar-toggle-sidebar))
+;;   :ensure t
+;;   :commands (dired-sidebar-toggle-sidebar)
+;;   :init
+;;   (add-hook 'dired-sidebar-mode-hook
+;;             (lambda ()
+;;               (unless (file-remote-p default-directory)
+;;                 (auto-revert-mode))))
+;;   :config
+;;   (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
+;;   (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
+
+;;   (setq dired-sidebar-subtree-line-prefix "__")
+;;   (setq dired-sidebar-use-term-integration t)
+;;   (setq dired-sidebar-use-custom-font t))
+
+(use-package neotree
+  :ensure t
+  :config
+  (global-set-key (kbd "C-x C-d") 'neotree-toggle))
