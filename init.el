@@ -1,23 +1,12 @@
 (setq custom-theme-directory "~/.emacs.d/themes/")
 
-;;; -*- lexical-binding: t -*-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(ac-slime cl-libify company-quickhelp dashboard dired-sidebar evil
-              evil-collection helm-dash neotree slime-company vterm))
- '(tool-bar-mode nil))
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;EMACS CUSTOM OPTIONS
 (savehist-mode 1) ;;saves clipboard contents accross sessions
 (push 'kill-ring savehist-additional-variables)
-(tool-bar-mode nil) ;;hides toolbar
-(menu-bar-mode nil) ;;hides menu
+(tool-bar-mode -1) ;;hides toolbar
+(menu-bar-mode -1) ;;hides menu
 (which-key-mode) ;;shows tips for commands being typed
 (scroll-bar-mode -1) ;;hide scroll bar
 (electric-pair-mode t) ;;Match parenthesis
