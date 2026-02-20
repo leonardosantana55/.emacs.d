@@ -6,40 +6,38 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(column-number-mode t)
- '(menu-bar-mode nil)
  '(package-selected-packages
    '(ac-slime cl-libify company-quickhelp dashboard dired-sidebar evil
-              helm-dash neotree slime-company vterm))
+              evil-collection helm-dash neotree slime-company vterm))
  '(tool-bar-mode nil))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;EMACS CUSTOM OPTIONS
-(savehist-mode 1)
+(savehist-mode 1) ;;saves clipboard contents accross sessions
 (push 'kill-ring savehist-additional-variables)
-(which-key-mode)
-(scroll-bar-mode -1); hide scroll bar
-(electric-pair-mode t) ; Match parenthesis
-(column-number-mode t); show column number on mode line
-(setq-default cursor-type '(bar . 2))
-
-(define-key global-map (kbd "<f9>") 'bookmark-bmenu-list)
-(global-unset-key (kbd "C-v")); stop emacs from moving when i make a mistake
-
-(setq ring-bell-function 'ignore)
+(tool-bar-mode nil) ;;hides toolbar
+(menu-bar-mode nil) ;;hides menu
+(which-key-mode) ;;shows tips for commands being typed
+(scroll-bar-mode -1) ;;hide scroll bar
+(electric-pair-mode t) ;;Match parenthesis
+(column-number-mode t) ;;show column number on mode line
+(setq-default cursor-type '(bar . 2)) ;;default cursor
+(setq ring-bell-function 'ignore) ;;stops annoying sound
 (setq tab-width 4)
 (setq-default indent-tabs-mode nil); Use spaces, not tabs, for indentation.
 (setq fill-column 80)
-(setq blink-cursor-blinks 0); never stop blinking 
-(setq completions-format 'one-column); or 'horizontal, or 'one-column
-(setq cursor-in-non-selected-windows nil) ; show cursor only in the active window
-(setq doc-view-scale-internally t)
-(setq doc-view-resolution 300)
-(setq scroll-margin 4)
-(setq scroll-step 1)
-(setq inhibit-startup-screen t)
-(setq help-window-select t)  ; Switch focus to help buffers automatically
+(setq blink-cursor-blinks 0) ;;never stop blinking 
+(setq completions-format 'one-column) ;;'horizontal, or 'one-column
+(setq cursor-in-non-selected-windows nil) ;;show cursor only in the active window
+(setq doc-view-scale-internally t) ;;pdf stuff
+(setq doc-view-resolution 300) ;;pdf stuff
+(setq scroll-margin 4) ;;margin
+(setq scroll-step 1) ;;step
+(setq inhibit-startup-screen t) ;;yes
+(setq help-window-select t)  ;;Switch focus to help buffers automatically
+
+(global-unset-key (kbd "C-v")) ;;stop emacs from moving when I make a mistake
 
 (set-face-attribute 'default nil :font "Noto Sans Mono" :height 120)
 (set-face-attribute 'italic nil :family "Noto Mono" :slant 'italic :height 120)
@@ -50,28 +48,20 @@
 (add-hook 'python-mode-hook 'display-line-numbers-mode)
 (add-hook 'sh-mode-hook 'display-line-numbers-mode)
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;WINDOW MANAGEMENT
-
 (add-to-list 'display-buffer-alist
              '("\\*vterm*"
                ;;(display-buffer-full-frame)
                (display-buffer-at-bottom)
                (window-height . 12)
                ))
-
-
-;;or should i put this on the vterm section?
-;;TODO add a shortcut to open or to close depending on state.
-;;i want to open and close vterm with the same keystroke.
-;; https://www.reddit.com/r/emacs/comments/179t67l/window_management_share_your_displaybufferalist/
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;MODUS THEME
-
 (defun hex-color-factor (hex-color-string factor)
   "Diminish a HEX color string by a given factor (0.0 to 1.0).
 A factor of 1.0 means no change, 0.5 makes it 50% darker.
@@ -92,7 +82,6 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
          (new-g-hex (format "%02x" new-g))
          (new-b-hex (format "%02x" new-b)))
     (format "#%s%s%s" new-r-hex new-g-hex new-b-hex)))
-
 
 (require-theme 'modus-themes)
 (setq modus-themes-bold-constructs t)
@@ -360,28 +349,28 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;BOOKMARKS
-(define-key global-map (kbd "<f9>") 'bookmark-bmenu-list)
-;; C-x r m createas a new bookmark
-(defun kill-buffer-bookmark ()
-  (interactive)
-  (kill-buffer (buffer-name)))
+(define-key global-map (kbd "<f9>") 'bookmark-jump)
+;; ;; C-x r m createas a new bookmark
+;; (defun kill-buffer-bookmark ()
+;;   (interactive)
+;;   (kill-buffer (buffer-name)))
 
-(defun goto-and-kill-bookmark ()
-    (interactive)
-    (let ((buffer-name (buffer-name)))
-      (bookmark-bmenu-this-window)
-      (kill-buffer buffer-name)))
+;; (defun goto-and-kill-bookmark ()
+;;     (interactive)
+;;     (let ((buffer-name (buffer-name)))
+;;       (bookmark-bmenu-this-window)
+;;       (kill-buffer buffer-name)))
 
-(add-hook 'bookmark-bmenu-mode-hook
-	  (lambda ()
-            (keymap-local-set "RET" #'goto-and-kill-bookmark)
-            (keymap-local-set "C-<return>" #'bookmark-bmenu-this-window)
-            (keymap-local-set "h" #'evil-backward-char)
-            (keymap-local-set "j" #'evil-next-line)
-            (keymap-local-set "k" #'evil-previous-line)
-            (keymap-local-set "l" #'evil-forward-char)
-            (keymap-local-set "<f9>" #'kill-buffer-bookmark)))
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; (add-hook 'bookmark-bmenu-mode-hook
+;; 	  (lambda ()
+;;             (keymap-local-set "RET" #'goto-and-kill-bookmark)
+;;             (keymap-local-set "C-<return>" #'bookmark-bmenu-this-window)
+;;             (keymap-local-set "h" #'evil-backward-char)
+;;             (keymap-local-set "j" #'evil-next-line)
+;;             (keymap-local-set "k" #'evil-previous-line)
+;;             (keymap-local-set "l" #'evil-forward-char)
+;;             (keymap-local-set "<f9>" #'kill-buffer-bookmark)))
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -390,6 +379,7 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
 (add-hook 'ibuffer-mode-hook 'ibuffer-do-sort-by-recency); hide backup files
 
 (defun my-kill-buffer-path ()
+  "kill means copying duh"
   (interactive)
   (when (buffer-file-name)
     (kill-new (concat "cd " "\"" (file-name-directory (buffer-file-name)) "\""))))
@@ -449,6 +439,7 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
 ;;;COMPANY CONFIG
 (add-hook 'after-init-hook 'global-company-mode);;company starts at boot
 
+;;while refactoringthis file i think i can use the :map in :bind to set bindings in specific modes
 
 (keymap-global-set "C-<tab>" 'company-complete)
 (with-eval-after-load 'company
@@ -482,60 +473,70 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;QUICKCOMPANY
-(unless (package-installed-p 'company-quickhelp)
-  (package-install 'company-quickhelp))
-(company-quickhelp-mode)
-(setq company-quickhelp-delay nil)
-(eval-after-load 'company
-  '(define-key company-active-map (kbd "<f1>") #'company-quickhelp-manual-begin))
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; (unless (package-installed-p 'company-quickhelp)
+;;   (package-install 'company-quickhelp))
+;; (company-quickhelp-mode)
+;; (setq company-quickhelp-delay nil)
+;; (eval-after-load 'company
+;;   '(define-key company-active-map (kbd "<f1>") #'company-quickhelp-manual-begin))
+
+(use-package company-quickhelp
+  :after company
+  :ensure t
+  :config
+  (setq company-quickhelp-delay nil)
+  (company-quickhelp-mode)
+  :bind
+  (:map company-active-map ("<f1>" . company-quickhelp-manual-begin)))
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;EVIL MODE
-;; Download Evil
-(unless (package-installed-p 'evil)
-  (package-install 'evil))
+(use-package evil
+  :ensure t
+  :init
+  (setq evil-disable-insert-state-bindings t) ; insert state becomes emacs state
+  (setq evil-want-integration t)
+  (setq evil-want-keybinding nil) ;; this is needed for evil-collection
+  :config
+  (evil-mode 1)
+  (setq evil-emacs-state-cursor '((bar . 2)))
 
-;; Enable Evil
-;; To avoid bugs, it seems that (require 'evil) and (evil-mode 1)
-;; must come after the evil-disable-insert-state-bindings
-(setq evil-disable-insert-state-bindings t) ; insert state becomes emacs state
-(require 'evil) 
-(evil-mode 1)
+  ;; evil is not optimal for some modes
+  (setq evil-default-state 'normal)
+  (evil-set-initial-state 'vterm-mode 'emacs)
+  (evil-set-initial-state 'electric-buffer-menu-mode 'emacs)
+  (evil-set-initial-state 'Info-mode 'emacs)
+  (evil-set-initial-state 'help-mode 'motion)
 
-(setq evil-emacs-state-cursor '((bar . 2)))
+  ;; custom keybidings for evil
+  ;;;;;i think i can use :map on :bindings here
+  ;; https://www.gnu.org/software/emacs/manual/html_mono/use-package.html#Basic-Concepts
+  (define-key evil-insert-state-map (kbd "C-h") 'left-char)
+  (define-key evil-insert-state-map (kbd "C-j") 'next-line)
+  (define-key evil-insert-state-map (kbd "C-k") 'previous-line)
+  (define-key evil-insert-state-map (kbd "C-l") 'right-char)
+  (define-key evil-visual-state-map (kbd "-") #'(lambda ()
+                                                  (interactive)
+                                                  (evil-end-of-line)
+                                                  (evil-backward-char)))
 
-;; evil is not optimal for some modes
-(setq evil-default-state 'normal)
-(evil-set-initial-state 'vterm-mode 'emacs)
-(evil-set-initial-state 'electric-buffer-menu-mode 'emacs)
-(evil-set-initial-state 'Info-mode 'emacs)
-(evil-set-initial-state 'help-mode 'motion)
+  (define-key evil-normal-state-map (kbd "}") #'(lambda ()
+                                                  (interactive)
+                                                  (evil-forward-paragraph)
+                                                  (redraw-display)))
+  
+  (define-key evil-normal-state-map (kbd "{") #'(lambda ()
+                                                  (interactive)
+                                                  (evil-backward-paragraph)
+                                                  (redraw-display)))
 
-;; custom keybidings for evil
-(define-key evil-insert-state-map (kbd "C-h") 'left-char)
-(define-key evil-insert-state-map (kbd "C-j") 'next-line)
-(define-key evil-insert-state-map (kbd "C-k") 'previous-line)
-(define-key evil-insert-state-map (kbd "C-l") 'right-char)
-(define-key evil-visual-state-map (kbd "-") #'(lambda ()
-                                                (interactive)
-                                                (evil-end-of-line)
-                                                (evil-backward-char)))
+  (define-key evil-normal-state-map (kbd "-") 'evil-end-of-line))
 
 
-(define-key evil-normal-state-map (kbd "}") #'(lambda ()
-                                                (interactive)
-                                                (evil-forward-paragraph)
-                                                (redraw-display)))
-(define-key evil-normal-state-map (kbd "{") #'(lambda ()
-                                                (interactive)
-                                                (evil-backward-paragraph)
-                                                (redraw-display)))
-
-(define-key evil-normal-state-map (kbd "-") 'evil-end-of-line)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package evil-collection
+  :after evil
+  :ensure t
+  :config
+  (evil-collection-init))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -557,43 +558,39 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
 ;;VTERM
 
 
-(if (eq system-type 'gnu/linux)
-    (progn
-      (use-package vterm
-        :ensure t)
-      (setq vterm-shell "/usr/bin/bash")
-      (define-key vterm-mode-map (kbd "<f9>") 'bookmark-bmenu-list)
-      (define-key vterm-mode-map (kbd "<f12>") 'delete-window)
+;; (if (eq system-type 'gnu/linux)
+;;     (progn
+;;       (use-package vterm
+;;         :ensure t)
+;;       (setq vterm-shell "/usr/bin/bash")
+;;       (define-key vterm-mode-map (kbd "<f9>") 'bookmark-bmenu-list)
+;;       (define-key vterm-mode-map (kbd "<f12>") 'delete-window)
 
-      (setq initial-buffer-choice #'vterm)
-      (define-key global-map (kbd "<f12>") 'vterm)))
-
-
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+;;       (setq initial-buffer-choice #'vterm)
+;;       (define-key global-map (kbd "<f12>") 'vterm)))
 
 
-;; (require 'dired-subtree)
-;; (use-package dired-sidebar
-;;   :bind (("C-x C-d" . dired-sidebar-toggle-sidebar))
+;;tem que validar isso aqui
+;; (use-package vterm
+;;   :if (eq system-type 'gnu/linux)
 ;;   :ensure t
-;;   :commands (dired-sidebar-toggle-sidebar)
-;;   :init
-;;   (add-hook 'dired-sidebar-mode-hook
-;;             (lambda ()
-;;               (unless (file-remote-p default-directory)
-;;                 (auto-revert-mode))))
 ;;   :config
-;;   (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
-;;   (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
+;;   (setq vterm-shell "/usr/bim/bash")
+;;   (setq initial-buffer-choice #'vterm)
+;;   :bind (("<f12>" . vterm)
+;;          :map vterm-mode-map
+;;          ("<f12>" . delete-window)))
+(if (eq system-type 'gnu/linux)
+    (use-package vterm
+      :ensure t
+      :config
+      (setq vterm-shell "/usr/bim/bash")
+      (setq initial-buffer-choice #'vterm)
+      :bind (("<f12>" . vterm)
+             :map vterm-mode-map
+             ("<f12>" . delete-window))))
 
-;;   (setq dired-sidebar-subtree-line-prefix "__")
-;;   (setq dired-sidebar-use-term-integration t)
-;;   (setq dired-sidebar-use-custom-font t))
+
 
 (use-package neotree
   :ensure t
