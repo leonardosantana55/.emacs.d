@@ -1,4 +1,5 @@
 (setq custom-theme-directory "~/.emacs.d/themes/")
+(require 'use-package-ensure)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -491,10 +492,10 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
 
   ;; evil is not optimal for some modes
   (setq evil-default-state 'normal)
-  (evil-set-initial-state 'vterm-mode 'emacs)
-  (evil-set-initial-state 'electric-buffer-menu-mode 'emacs)
-  (evil-set-initial-state 'Info-mode 'emacs)
-  (evil-set-initial-state 'help-mode 'motion)
+  ;; (evil-set-initial-state 'vterm-mode 'emacs)
+  ;; (evil-set-initial-state 'electric-buffer-menu-mode 'emacs)
+  ;; (evil-set-initial-state 'Info-mode 'emacs)
+  ;; (evil-set-initial-state 'help-mode 'motion)
 
   ;; custom keybidings for evil
   ;;;;;i think i can use :map on :bindings here
@@ -573,7 +574,7 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
     (use-package vterm
       :ensure t
       :config
-      (setq vterm-shell "/usr/bim/bash")
+      (setq vterm-shell "/usr/bin/bash")
       (setq initial-buffer-choice #'vterm)
       :bind (("<f12>" . vterm)
              :map vterm-mode-map
@@ -585,3 +586,15 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
   :ensure t
   :config
   (global-set-key (kbd "C-x C-d") 'neotree-toggle))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages nil))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
