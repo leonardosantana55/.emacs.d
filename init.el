@@ -545,31 +545,45 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;PYTHON
+(defun my-pip-install (package-name)
+  "This function facilitates installing pip packages using the python REPL"
+  (interactive "Mpackage-name: " python-mode inferior-python-mode)
+      (let* ((python-code-start
+        "import subprocess
+import sys
+
+subprocess.check_call([sys.executable, \"-m\", \"pip\", \"install\", ")
+             (input-string package-name)
+             (python-code-end "])
+del subprocess
+del sys")
+             (output-string (concat python-code-start
+                                    "\""
+                                    input-string
+                                    "\""
+                                    python-code-end)))
+        (python-shell-send-string output-string)))
+
+(defun my-run-python ()
+  "checks if there is a single venv on current path and changes the
+python-shell-virtual-root variable before calling run-python"
+  (interactive nil python-mode)
+  (let* ((result (directory-files-recursively "." "^python$"))
+         (length (length result))
+         (expanded-name (string-remove-suffix "bin/"
+                         (file-name-directory
+                          (expand-file-name
+                           (car result))))))
+    ;; (format "%s, %s, %s" result length tipo)
+    (if (= length 1)
+        (progn
+          (setq python-shell-virtualenv-root expanded-name)
+          (call-interactively #'run-python))
+      (print "There's too many or zero venv in the current dir"))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;VTERM
-
-
-;; (if (eq system-type 'gnu/linux)
-;;     (progn
-;;       (use-package vterm
-;;         :ensure t)
-;;       (setq vterm-shell "/usr/bin/bash")
-;;       (define-key vterm-mode-map (kbd "<f9>") 'bookmark-bmenu-list)
-;;       (define-key vterm-mode-map (kbd "<f12>") 'delete-window)
-
-;;       (setq initial-buffer-choice #'vterm)
-;;       (define-key global-map (kbd "<f12>") 'vterm)))
-
-
-;;tem que validar isso aqui
-;; (use-package vterm
-;;   :if (eq system-type 'gnu/linux)
-;;   :ensure t
-;;   :config
-;;   (setq vterm-shell "/usr/bim/bash")
-;;   (setq initial-buffer-choice #'vterm)
-;;   :bind (("<f12>" . vterm)
-;;          :map vterm-mode-map
-;;          ("<f12>" . delete-window)))
 (if (eq system-type 'gnu/linux)
     (use-package vterm
       :ensure t
@@ -581,17 +595,21 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
              ("<f12>" . delete-window))))
 
 
-
 (use-package neotree
   :ensure t
   :config
-  (global-set-key (kbd "C-x C-d") 'neotree-toggle))
+  (global-set-key (kbd "C-x C-d") 'neotree-show)
+  (setq-default neo-show-hidden-files t))
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages nil))
+ '(package-selected-packages
+   '(ac-slime cl-libify company-quickhelp dashboard dired-sidebar
+              evil-collection helm-dash neotree paredit pyenv-mode
+              rainbow-delimiters slime-company vterm))
+ '(warning-suppress-types '((python python-shell-prompt-regexp))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
