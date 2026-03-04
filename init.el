@@ -582,6 +582,17 @@ python-shell-virtual-root variable before calling run-python"
           (call-interactively #'run-python))
       (print "There's too many or zero venv in the current dir"))))
 
+(add-hook 'inferior-python-mode-hook
+          (lambda ()
+            ;; Disable bidi (huge performance boost for long lines)
+            (setq-local bidi-paragraph-direction 'left-to-right)
+            (setq-local bidi-inhibit-bpa t)
+            ;; Truncate long lines instead of wrapping them
+            (setq-local truncate-lines t)
+            ;; Increase the amount of data Emacs reads from the process (default is 4k)
+            (setq read-process-output-max (* 1024 1024)))) ;; 1MB
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;VTERM
 (if (eq system-type 'gnu/linux)
