@@ -1,5 +1,8 @@
 (setq custom-theme-directory "~/.emacs.d/themes/")
 (require 'use-package-ensure)
+(setq initial-scratch-message
+      ";; Que para ti, meu Deus, comece e termine todas as nossas ações
+")
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
