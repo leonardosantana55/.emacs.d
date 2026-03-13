@@ -17,7 +17,7 @@
 (column-number-mode t) ;;show column number on mode line
 (setq-default cursor-type '(bar . 2)) ;;default cursor
 (setq ring-bell-function 'ignore) ;;stops annoying sound
-(setq tab-width 4)
+(setq-default tab-width 4)
 (setq-default indent-tabs-mode nil); Use spaces, not tabs, for indentation.
 (setq fill-column 80)
 (setq blink-cursor-blinks 0) ;;never stop blinking 
