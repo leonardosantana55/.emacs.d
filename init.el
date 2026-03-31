@@ -82,15 +82,18 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
 ;;(setq modus-vivendi-palette-overrides modus-themes-preset-overrides-faint)
 
 (setq modus-themes-common-palette-overrides
-    '((builtin "#5f6879")
-        (comment fg-dim)
+      '(
+        ;; (builtin "#5f6879")
+        ;; (comment fg-dim)
+        (comment "#5f6879")
+        (builtin fg-dim)
         (constant fg-main)
-        (docstring green-intense)
+        (docstring goldenrod)
         (docmarkup fg-main)
-        (fnname red-cooler)
-        (keyword yellow-warmer)
+        (fnname red-intense)
+        (keyword fg-dim)
         (preprocessor blue-faint)
-        (string green-intense)
+        (string yellow-cooler)
         (type fg-main)
         (variable fg-main)
         (rx-construct fg-main)
@@ -583,7 +586,7 @@ python-shell-virtual-root variable before calling run-python"
         (progn
           (setq python-shell-virtualenv-root expanded-name)
           (call-interactively #'run-python))
-      (print "There's too many or zero venv in the current dir"))))
+      (setq python-shell-virtualenv-root nil))))
 
 (add-hook 'inferior-python-mode-hook
           (lambda ()
@@ -613,7 +616,11 @@ python-shell-virtual-root variable before calling run-python"
   :ensure t
   :config
   (global-set-key (kbd "C-x C-d") 'neotree-show)
-  (setq-default neo-show-hidden-files t))
+  (setq-default neo-show-hidden-files t)
+  (setq-default neo-confirm-create-directory nil)
+  (setq-default neo-confirm-create-file nil))
+
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
