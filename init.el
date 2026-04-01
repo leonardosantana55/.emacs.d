@@ -88,7 +88,7 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
         (comment "#5f6879")
         (builtin fg-dim)
         (constant fg-main)
-        (docstring goldenrod)
+        (docstring red-faint)
         (docmarkup fg-main)
         (fnname red-intense)
         (keyword fg-dim)
