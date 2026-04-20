@@ -30,7 +30,6 @@
 (setq inhibit-startup-screen t) ;;yes
 (setq help-window-select t)  ;;Switch focus to help buffers automatically
 
-(global-unset-key (kbd "C-v")) ;;stop emacs from moving when I make a mistake
 
 (set-face-attribute 'default nil :font "Noto Sans Mono" :height 120)
 (set-face-attribute 'italic nil :family "Noto Mono" :slant 'italic :height 120)
@@ -40,6 +39,7 @@
 (add-hook 'c-mode-hook 'display-line-numbers-mode)
 (add-hook 'python-mode-hook 'display-line-numbers-mode)
 (add-hook 'sh-mode-hook 'display-line-numbers-mode)
+(add-hook 'sql-mode-hook 'display-line-numbers-mode)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -117,9 +117,11 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
           (bg-mode-line-active bg-active)
           (fg-mode-line-active fg-active)
           (fg-mode-line-inactive ,(hex-color-factor bg 3.5))
-          (border-mode-line-active fg-dim)
+          (border-mode-line-active "#3f4859")
+          ;; (border-mode-line-active fg-dim)
           (bg-mode-line-inactive bg-main)
-          (border-mode-line-inactive fg-dim)
+          (border-mode-line-inactive "#3f4859")
+          ;; (border-mode-line-inactive fg-dim)
           (bg-tab-bar bg-inactive)
           (bg-tab-current bg-main)
           (bg-tab-other bg-active)
@@ -196,9 +198,10 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
 
 (load-theme 'modus-vivendi)
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;KEY BINDINGS
+;;;KEYMAPS
+(global-unset-key (kbd "C-v")) ;;stop emacs from moving when I make a mistake
+(keymap-global-set "C-x f" 'find-file)
 (keymap-global-set "C-c b" 'ibuffer)
 (keymap-global-set
  ;Load init.el
@@ -316,6 +319,11 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;DIRED
+
+;; put directories first on listing
+(setq ls-lisp-use-insert-directory-program nil)
+(setq ls-lisp-dirs-first t)
+
 (setq dired-kill-when-opening-new-dired-buffer 1)
 
 (add-hook 'dired-mode-hook 'dired-omit-mode); hide backup files
@@ -336,11 +344,23 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
       (dired-find-file)
       (kill-buffer buffer-name)))
 
-(add-hook 'dired-mode-hook
-          (lambda ()
-            (keymap-local-set "RET" #'goto-and-kill-dired)
-            (keymap-local-set "C-<return>" #'dired-find-file)))
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;; this is being overrun by someting else
+;; (add-hook 'dired-mode-hook
+;;           (lambda ()
+;;             (keymap-local-set "RET" #'goto-and-kill-dired)
+;;             (keymap-local-set "C-<return>" #'dired-find-file)))
+;; ;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package dired-sidebar
+  :bind (("C-x C-d" . dired-sidebar-toggle-sidebar))
+  :ensure nil
+  :commands (dired-sidebar-toggle-sidebar))
+
+(use-package dired-subtree)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -506,6 +526,12 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
   ;; custom keybidings for evil
   ;;;;;i think i can use :map on :bindings here
   ;; https://www.gnu.org/software/emacs/manual/html_mono/use-package.html#Basic-Concepts
+  (evil-set-leader 'normal (kbd "<SPC>"))
+;; Make <leader> act as C-x prefix
+  (evil-define-key 'normal 'global
+    (kbd "<leader>") (lookup-key global-map (kbd "C-x")))
+ (evil-define-key 'normal 'global
+    (kbd "<leader>c") (lookup-key global-map (kbd "C-c")))
   (define-key evil-insert-state-map (kbd "C-h") 'left-char)
   (define-key evil-insert-state-map (kbd "C-j") 'next-line)
   (define-key evil-insert-state-map (kbd "C-k") 'previous-line)
@@ -527,11 +553,17 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
 
   (define-key evil-normal-state-map (kbd "-") 'evil-end-of-line))
 
+;; this is for puting deletion into the blacl whole register instead o unnamed register
+;; (defun bb/evil-delete (orig-fn beg end &optional type _ &rest args)
+;;   (apply orig-fn beg end type ?_ args))
+;; (advice-add 'evil-delete :around 'bb/evil-delete)
+
 
 (use-package evil-collection
   :after evil
   :ensure t
   :config
+  (setq evil-collection-key-blacklist (list "SPC")) ;dont steal evil's leader key 
   (evil-collection-init))
 
 
@@ -549,6 +581,13 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
             (keymap-local-set "<f5>" #'c-save-and-compile)
             (keymap-local-set "<f7>" #'gud-gdb)))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;SQL
+(add-hook
+ 'sql-mode-hook
+ (lambda ()
+   (setq-local eldoc-documentation-function #'ignore)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;PYTHON
@@ -612,13 +651,14 @@ python-shell-virtual-root variable before calling run-python"
              ("<f12>" . delete-window))))
 
 
-(use-package neotree
-  :ensure t
-  :config
-  (global-set-key (kbd "C-x C-d") 'neotree-show)
-  (setq-default neo-show-hidden-files t)
-  (setq-default neo-confirm-create-directory nil)
-  (setq-default neo-confirm-create-file nil))
+;; (use-package neotree
+;;   :ensure t
+;;   :config
+;;   (global-set-key (kbd "C-x C-d") 'neotree-show)
+;;   (setq neo-theme (if (display-graphic-p) 'arrow 'arrow))
+;;   (setq-default neo-show-hidden-files t)
+;;   (setq-default neo-confirm-create-directory nil)
+;;   (setq-default neo-confirm-create-file nil))
 
 
 (custom-set-variables
