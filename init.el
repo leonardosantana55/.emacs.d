@@ -498,8 +498,7 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
 ;;;COMPANY CONFIG
 (add-hook 'after-init-hook 'global-company-mode);;company starts at boot
 
-;;while refactoringthis file i think i can use the :map in :bind to set bindings in specific modes
-(key)
+;;while refactoringthis file i think i can use the :map in :bind to set bindings in specific mode
 
 (keymap-global-set "M-<SPC>" 'company-complete)
 (with-eval-after-load 'company
