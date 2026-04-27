@@ -584,17 +584,19 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
                                                   (evil-end-of-line)
                                                   (evil-backward-char)))
 
-  (define-key evil-normal-state-map (kbd "}") #'(lambda ()
-                                                  (interactive)
-                                                  (evil-forward-paragraph)
-                                                  (redraw-display)))
-  
-  (define-key evil-normal-state-map (kbd "{") #'(lambda ()
-                                                  (interactive)
-                                                  (evil-backward-paragraph)
-                                                  (redraw-display)))
-
   (define-key evil-normal-state-map (kbd "-") 'evil-end-of-line))
+
+  ;; the redraw-display is for hacking a fix for a graphical bug that i got on windows
+  (if (not (eq system-type 'gnu/linux))
+      (define-key evil-normal-state-map (kbd "}") #'(lambda ()
+                                                      (interactive)
+                                                      (evil-forward-paragraph)
+                                                      (redraw-display)))
+    (define-key evil-normal-state-map (kbd "{") #'(lambda ()
+                                                    (interactive)
+                                                    (evil-backward-paragraph)
+                                                    (redraw-display))))
+
 
 ;; this is for puting deletion into the blacl whole register instead o unnamed register
 ;; (defun bb/evil-delete (orig-fn beg end &optional type _ &rest args)
@@ -693,27 +695,3 @@ python-shell-virtual-root variable before calling run-python"
              :map vterm-mode-map
              ("<f12>" . delete-window))))
 
-
-;; (use-package neotree
-;;   :ensure t
-;;   :config
-;;   (global-set-key (kbd "C-x C-d") 'neotree-show)
-;;   (setq neo-theme (if (display-graphic-p) 'arrow 'arrow))
-;;   (setq-default neo-show-hidden-files t)
-;;   (setq-default neo-confirm-create-directory nil)
-;;   (setq-default neo-confirm-create-file nil))
-
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages nil)
- '(warning-suppress-types '((python python-shell-prompt-regexp))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
