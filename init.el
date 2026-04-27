@@ -499,11 +499,12 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
 (add-hook 'after-init-hook 'global-company-mode);;company starts at boot
 
 ;;while refactoringthis file i think i can use the :map in :bind to set bindings in specific modes
+(key)
 
-(keymap-global-set "C-<tab>" 'company-complete)
+(keymap-global-set "M-<SPC>" 'company-complete)
 (with-eval-after-load 'company
   (define-key company-active-map
-              (kbd "C-<tab>")
+              (kbd "M-<SPC>")
               #'company-select-next)
   (define-key company-active-map
               (kbd "<backtab>")
