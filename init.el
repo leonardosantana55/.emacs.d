@@ -1,3 +1,9 @@
+;; TODO check for a fresh emacs isntall and run package-refresh-contents
+;; for it will cause errors
+(package-refresh-contents t)
+
+
+
 (setq custom-theme-directory "~/.emacs.d/themes/")
 (require 'use-package-ensure)
 (setq initial-scratch-message
@@ -355,12 +361,17 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+
+(use-package dired-hacks-utils
+  :ensure t)
+
 (use-package dired-sidebar
   :bind (("C-x C-d" . dired-sidebar-toggle-sidebar))
-  :ensure nil
+  :ensure t
   :commands (dired-sidebar-toggle-sidebar))
 
-(use-package dired-subtree)
+(use-package dired-subtree
+  :ensure t)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -421,34 +432,66 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;SLIME
-(setq inferior-lisp-program "sbcl")
-(require 'slime-autoloads)
-(slime-setup '(slime-fancy slime-company))
-(setq slime-contribs '(slime-fancy slime-asdf))
+
+(use-package slime
+    :ensure t
+    :config
+    (setq inferior-lisp-program "sbcl")
+    (defun open-slime-and-go-back ()
+      "Start slime and return focus to original window."
+      (interactive)
+      (let ((original-window (selected-window)))
+        (slime)
+        (select-window original-window)))
+
+    (defun clear-slime-and-go-back ()
+      "clear slime and return focus to original window."
+      (interactive)
+      (let ((original-window (selected-window)))
+        (other-window 1)
+        (slime-repl-clear-buffer)
+        (select-window original-window)))
+
+    (add-hook 'lisp-mode-hook
+          (lambda ()
+                (keymap-local-set "<f7>" #'clear-slime-and-go-back)
+                (keymap-local-set "<f6>" #'slime-eval-buffer)
+                (keymap-local-set "<f5>" #'slime-eval-defun)
+                (keymap-local-set "C-c s s" #'open-slime-and-go-back))))
 
 
-(defun open-slime-and-go-back ()
-  "Start slime and return focus to original window."
-  (interactive)
-  (let ((original-window (selected-window)))
-    (slime)
-    (select-window original-window)))
+(use-package slime-company
+    :ensure t)
 
-(defun clear-slime-and-go-back ()
-  "clear slime and return focus to original window."
-  (interactive)
-  (let ((original-window (selected-window)))
-    (other-window 1)
-    (slime-repl-clear-buffer)
-    (select-window original-window)))
 
-(add-hook 'lisp-mode-hook
-	  (lambda ()
-            (keymap-local-set "<f7>" #'clear-slime-and-go-back)
-            (keymap-local-set "<f6>" #'slime-eval-buffer)
-            (keymap-local-set "<f5>" #'slime-eval-defun)
-            (keymap-local-set "C-c s s" #'open-slime-and-go-back)))
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; (setq inferior-lisp-program "sbcl")
+;; (require 'slime-autoloads)
+;; (slime-setup '(slime-fancy slime-company))
+;; (setq slime-contribs '(slime-fancy slime-asdf))
+;; 
+;; 
+;; (defun open-slime-and-go-back ()
+;;   "Start slime and return focus to original window."
+;;   (interactive)
+;;   (let ((original-window (selected-window)))
+;;     (slime)
+;;     (select-window original-window)))
+;; 
+;; (defun clear-slime-and-go-back ()
+;;   "clear slime and return focus to original window."
+;;   (interactive)
+;;   (let ((original-window (selected-window)))
+;;     (other-window 1)
+;;     (slime-repl-clear-buffer)
+;;     (select-window original-window)))
+;; 
+;; (add-hook 'lisp-mode-hook
+;; 	  (lambda ()
+;;             (keymap-local-set "<f7>" #'clear-slime-and-go-back)
+;;             (keymap-local-set "<f6>" #'slime-eval-buffer)
+;;             (keymap-local-set "<f5>" #'slime-eval-defun)
+;;             (keymap-local-set "C-c s s" #'open-slime-and-go-back)))
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -666,10 +709,7 @@ python-shell-virtual-root variable before calling run-python"
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(ac-slime cl-libify company-quickhelp dashboard dired-sidebar
-              evil-collection helm-dash neotree paredit pyenv-mode
-              rainbow-delimiters slime-company vterm))
+ '(package-selected-packages nil)
  '(warning-suppress-types '((python python-shell-prompt-regexp))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
