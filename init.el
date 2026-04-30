@@ -336,11 +336,11 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
 (add-hook 'dired-mode-hook 'hl-line-mode); highligths line in dired
 (add-hook 'dired-mode-hook 'dired-hide-details-mode); bound to "("
 
-(keymap-global-set
- "C-x C-d"
- (lambda ()
-   (interactive)
-   (dired ".")))
+;; (keymap-global-set
+;;  "C-x C-d"
+;;  (lambda ()
+;;    (interactive)
+;;    (dired ".")))
 
 (setq dired-listing-switches "-vAFla")
 
@@ -349,6 +349,13 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
     (let ((buffer-name (buffer-name)))
       (dired-find-file)
       (kill-buffer buffer-name)))
+
+(defun goto-and-kill-dired-sidebar ()
+    (interactive)
+    (let ((buffer-name (buffer-name)))
+      (dired-sidebar-find-file)
+      (kill-buffer buffer-name)))
+
 
 
 
@@ -366,9 +373,18 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
   :ensure t)
 
 (use-package dired-sidebar
-  :bind (("C-x C-d" . dired-sidebar-toggle-sidebar))
+  :bind (("C-x C-d" . dired-sidebar-toggle-with-current-directory))
   :ensure t
-  :commands (dired-sidebar-toggle-sidebar))
+  :commands (dired-sidebar-toggle-with-current-directory)
+  :config
+  ;; claude saved me on this one, spend two houers tryingto make this fucking shit work omg
+  (with-eval-after-load 'dired-sidebar
+  (define-key dired-sidebar-mode-map (kbd "RET") #'goto-and-kill-dired-sidebar)
+  (define-key dired-sidebar-mode-map [return] #'goto-and-kill-dired-sidebar)
+  (evil-define-key 'normal dired-sidebar-mode-map
+    (kbd "RET") #'goto-and-kill-dired-sidebar
+    [return] #'goto-and-kill-dired-sidebar)))
+
 
 (use-package dired-subtree
   :ensure t)
@@ -610,6 +626,8 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
   :config
   (setq evil-collection-key-blacklist (list "SPC")) ;dont steal evil's leader key 
   (evil-collection-init))
+
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
