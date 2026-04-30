@@ -1,18 +1,19 @@
-;; TODO check for a fresh emacs isntall and run package-refresh-contents
-;; for it will cause errors
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;PACKAGE MANAGER
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(package-initialize)
 (package-refresh-contents t)
-
-
-
-(setq custom-theme-directory "~/.emacs.d/themes/")
-(require 'use-package-ensure)
-(setq initial-scratch-message
-      ";; Que para ti, meu Deus, comecem e terminem todas as minhas ações
-")
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;EMACS CUSTOM OPTIONS
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(require 'use-package-ensure)
+(setq custom-theme-directory "~/.emacs.d/themes/")
+(setq initial-scratch-message
+      ";; Que para ti, meu Deus, comecem e terminem todas as minhas ações
+")
 (savehist-mode 1) ;;saves clipboard contents accross sessions
 (push 'kill-ring savehist-additional-variables)
 (tool-bar-mode -1) ;;hides toolbar
@@ -36,7 +37,6 @@
 (setq inhibit-startup-screen t) ;;yes
 (setq help-window-select t)  ;;Switch focus to help buffers automatically
 
-
 (set-face-attribute 'default nil :font "Noto Sans Mono" :height 120)
 (set-face-attribute 'italic nil :family "Noto Mono" :slant 'italic :height 120)
 
@@ -47,20 +47,19 @@
 (add-hook 'sh-mode-hook 'display-line-numbers-mode)
 (add-hook 'sql-mode-hook 'display-line-numbers-mode)
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;WINDOW MANAGEMENT
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (add-to-list 'display-buffer-alist
              '("\\*vterm*"
                ;;(display-buffer-full-frame)
                (display-buffer-at-bottom)
                (window-height . 12)
                ))
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;MODUS THEME
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun hex-color-factor (hex-color-string factor)
   "Diminish a HEX color string by a given factor (0.0 to 1.0).
 A factor of 1.0 means no change, 0.5 makes it 50% darker.
@@ -206,6 +205,7 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;KEYMAPS
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (global-unset-key (kbd "C-v")) ;;stop emacs from moving when I make a mistake
 (keymap-global-set "C-x f" 'find-file)
 (keymap-global-set "C-c b" 'ibuffer)
@@ -215,11 +215,10 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
  (lambda ()
    (interactive)
    (load-file (expand-file-name "~/.emacs.d/init.el"))))
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;GIT
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun my-git-push-current-file ()
    (interactive)
    (async-shell-command
@@ -241,19 +240,11 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
    (format "cd %s && git add . && git commit -m \"auto\" && git push"
            (expand-file-name "~/org/"))))
 (keymap-global-set "C-c g p a" #'my-git-push-init-and-org)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;PACKAGE MANAGER
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(package-initialize)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;ORG
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (setq org-hide-emphasis-markers t)
 (setq org-reverse-note-order t) ;; refile adds items to the top
 (setq org-agenda-files '("~/org"))
@@ -320,35 +311,10 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
          ("~/org/notes/ideas.org" :maxlevel . 1)
          ("~/org/notes/work.org" :maxlevel . 1)
          (nil :maxlevel . 1)))
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;DIRED
-
-;; put directories first on listing
-(setq ls-lisp-use-insert-directory-program nil)
-(setq ls-lisp-dirs-first t)
-
-(setq dired-kill-when-opening-new-dired-buffer 1)
-
-(add-hook 'dired-mode-hook 'dired-omit-mode); hide backup files
-(add-hook 'dired-mode-hook 'hl-line-mode); highligths line in dired
-(add-hook 'dired-mode-hook 'dired-hide-details-mode); bound to "("
-
-;; (keymap-global-set
-;;  "C-x C-d"
-;;  (lambda ()
-;;    (interactive)
-;;    (dired ".")))
-
-(setq dired-listing-switches "-vAFla")
-
-(defun goto-and-kill-dired ()
-    (interactive)
-    (let ((buffer-name (buffer-name)))
-      (dired-find-file)
-      (kill-buffer buffer-name)))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun goto-and-kill-dired-sidebar ()
     (interactive)
@@ -356,23 +322,22 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
       (dired-sidebar-find-file)
       (kill-buffer buffer-name)))
 
-
-
-
-;; this is being overrun by someting else
-;; (add-hook 'dired-mode-hook
-;;           (lambda ()
-;;             (keymap-local-set "RET" #'goto-and-kill-dired)
-;;             (keymap-local-set "C-<return>" #'dired-find-file)))
-;; ;
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
+(use-package dired
+  :config
+  ;; put directories first on listing
+  (setq ls-lisp-use-insert-directory-program nil)
+  (setq ls-lisp-dirs-first t)
+  (setq dired-kill-when-opening-new-dired-buffer 1)
+  (add-hook 'dired-mode-hook 'dired-omit-mode); hide backup files
+  (add-hook 'dired-mode-hook 'hl-line-mode); highligths line in dired
+  (add-hook 'dired-mode-hook 'dired-hide-details-mode); bound to "("
+  (setq dired-listing-switches "-vAFla"))
 
 (use-package dired-hacks-utils
   :ensure t)
 
 (use-package dired-sidebar
+  :after dired-hacks-utils
   :bind (("C-x C-d" . dired-sidebar-toggle-with-current-directory))
   :ensure t
   :commands (dired-sidebar-toggle-with-current-directory)
@@ -385,25 +350,12 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
     (kbd "RET") #'goto-and-kill-dired-sidebar
     [return] #'goto-and-kill-dired-sidebar)))
 
-
 (use-package dired-subtree
+  :after dired-hacks-utils
   :ensure t)
 
-
+;;;will keep this here just in case
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;BOOKMARKS
-(define-key global-map (kbd "<f9>") 'bookmark-jump)
-;; ;; C-x r m createas a new bookmark
-;; (defun kill-buffer-bookmark ()
-;;   (interactive)
-;;   (kill-buffer (buffer-name)))
-
-;; (defun goto-and-kill-bookmark ()
-;;     (interactive)
-;;     (let ((buffer-name (buffer-name)))
-;;       (bookmark-bmenu-this-window)
-;;       (kill-buffer buffer-name)))
-
 ;; (add-hook 'bookmark-bmenu-mode-hook
 ;; 	  (lambda ()
 ;;             (keymap-local-set "RET" #'goto-and-kill-bookmark)
@@ -418,6 +370,8 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; BUFFERS
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (keymap-global-set "C-x C-b" 'switch-to-buffer)
 (add-hook 'ibuffer-mode-hook 'ibuffer-do-sort-by-recency); hide backup files
 
@@ -426,11 +380,12 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
   (interactive)
   (when (buffer-file-name)
     (kill-new (concat "cd " "\"" (file-name-directory (buffer-file-name)) "\""))))
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;MIBIBUFFER
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (icomplete-vertical-mode t)
 (fido-vertical-mode t)
 (advice-add 'completion-at-point :after #'minibuffer-hide-completions)
@@ -443,11 +398,10 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
 
 (setq completions-sort #'historical)
 (setq completions-max-height 9)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;SLIME
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package slime
     :ensure t
@@ -475,43 +429,13 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
                 (keymap-local-set "<f5>" #'slime-eval-defun)
                 (keymap-local-set "C-c s s" #'open-slime-and-go-back))))
 
-
 (use-package slime-company
     :ensure t)
 
-
-;; (setq inferior-lisp-program "sbcl")
-;; (require 'slime-autoloads)
-;; (slime-setup '(slime-fancy slime-company))
-;; (setq slime-contribs '(slime-fancy slime-asdf))
-;; 
-;; 
-;; (defun open-slime-and-go-back ()
-;;   "Start slime and return focus to original window."
-;;   (interactive)
-;;   (let ((original-window (selected-window)))
-;;     (slime)
-;;     (select-window original-window)))
-;; 
-;; (defun clear-slime-and-go-back ()
-;;   "clear slime and return focus to original window."
-;;   (interactive)
-;;   (let ((original-window (selected-window)))
-;;     (other-window 1)
-;;     (slime-repl-clear-buffer)
-;;     (select-window original-window)))
-;; 
-;; (add-hook 'lisp-mode-hook
-;; 	  (lambda ()
-;;             (keymap-local-set "<f7>" #'clear-slime-and-go-back)
-;;             (keymap-local-set "<f6>" #'slime-eval-buffer)
-;;             (keymap-local-set "<f5>" #'slime-eval-defun)
-;;             (keymap-local-set "C-c s s" #'open-slime-and-go-back)))
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;COMPANY CONFIG
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (add-hook 'after-init-hook 'global-company-mode);;company starts at boot
 
 ;;while refactoringthis file i think i can use the :map in :bind to set bindings in specific mode
@@ -543,17 +467,6 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
 
 (with-eval-after-load 'company
   (add-to-list 'company-backends 'company-capf))
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;QUICKCOMPANY
-;; (unless (package-installed-p 'company-quickhelp)
-;;   (package-install 'company-quickhelp))
-;; (company-quickhelp-mode)
-;; (setq company-quickhelp-delay nil)
-;; (eval-after-load 'company
-;;   '(define-key company-active-map (kbd "<f1>") #'company-quickhelp-manual-begin))
 
 (use-package company-quickhelp
   :after company
@@ -564,6 +477,9 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
   :bind
   (:map company-active-map ("<f1>" . company-quickhelp-manual-begin)))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; EVIL
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package evil
   :ensure t
@@ -574,13 +490,7 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
   :config
   (evil-mode 1)
   (setq evil-emacs-state-cursor '((bar . 2)))
-
-  ;; evil is not optimal for some modes
   (setq evil-default-state 'normal)
-  ;; (evil-set-initial-state 'vterm-mode 'emacs)
-  ;; (evil-set-initial-state 'electric-buffer-menu-mode 'emacs)
-  ;; (evil-set-initial-state 'Info-mode 'emacs)
-  ;; (evil-set-initial-state 'help-mode 'motion)
 
   ;; custom keybidings for evil
   ;;;;;i think i can use :map on :bindings here
@@ -619,7 +529,6 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
 ;;   (apply orig-fn beg end type ?_ args))
 ;; (advice-add 'evil-delete :around 'bb/evil-delete)
 
-
 (use-package evil-collection
   :after evil
   :ensure t
@@ -632,6 +541,8 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;C
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (add-hook 'c-mode-hook (lambda () (c-set-style "stroustrup")))
 
 (defun c-save-and-compile()
@@ -643,10 +554,10 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
           (lambda ()
             (keymap-local-set "<f5>" #'c-save-and-compile)
             (keymap-local-set "<f7>" #'gud-gdb)))
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;SQL
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (add-hook
  'sql-mode-hook
  (lambda ()
@@ -698,11 +609,16 @@ python-shell-virtual-root variable before calling run-python"
             ;; Truncate long lines instead of wrapping them
             (setq-local truncate-lines t)
             ;; Increase the amount of data Emacs reads from the process (default is 4k)
-            (setq read-process-output-max (* 1024 1024)))) ;; 1MB
+            (setq read-process-output-max (* 1024 1024))))
+
+(add-hook 'python-mode-hook
+(lambda ()
+  (eldoc-mode -1)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;VTERM
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (if (eq system-type 'gnu/linux)
     (use-package vterm
       :ensure t
