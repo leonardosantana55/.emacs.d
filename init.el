@@ -337,18 +337,24 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
   :ensure t)
 
 (use-package dired-sidebar
-  :after dired-hacks-utils
+  :after dired-hacks-utils evil evil-collection dired-subtree
   :bind (("C-x C-d" . dired-sidebar-toggle-with-current-directory))
   :ensure t
   :commands (dired-sidebar-toggle-with-current-directory)
   :config
   ;; claude saved me on this one, spend two houers tryingto make this fucking shit work omg
-  (with-eval-after-load 'dired-sidebar
   (define-key dired-sidebar-mode-map (kbd "RET") #'goto-and-kill-dired-sidebar)
   (define-key dired-sidebar-mode-map [return] #'goto-and-kill-dired-sidebar)
   (evil-define-key 'normal dired-sidebar-mode-map
     (kbd "RET") #'goto-and-kill-dired-sidebar
-    [return] #'goto-and-kill-dired-sidebar)))
+    [return] #'goto-and-kill-dired-sidebar))
+
+;; (with-eval-after-load 'dired-sidebar
+;;   (define-key dired-sidebar-mode-map (kbd "RET") #'goto-and-kill-dired-sidebar)
+;;   (define-key dired-sidebar-mode-map [return] #'goto-and-kill-dired-sidebar)
+;;   (evil-define-key 'normal dired-sidebar-mode-map
+;;     (kbd "RET") #'goto-and-kill-dired-sidebar
+;;     [return] #'goto-and-kill-dired-sidebar))
 
 (use-package dired-subtree
   :after dired-hacks-utils
