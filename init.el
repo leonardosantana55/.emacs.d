@@ -1,10 +1,69 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;PACKAGE MANAGER
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 (package-refresh-contents t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; EVIL
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package evil
+  :ensure t
+  :init
+  (setq evil-disable-insert-state-bindings t) ; insert state becomes emacs state
+  (setq evil-want-integration t)
+  (setq evil-want-keybinding nil) ;; this is needed for evil-collection
+  :config
+  (evil-mode 1)
+  (setq evil-emacs-state-cursor '((bar . 2)))
+  (setq evil-default-state 'normal)
+
+  ;; custom keybidings for evil
+  ;;;;;i think i can use :map on :bindings here
+  ;; https://www.gnu.org/software/emacs/manual/html_mono/use-package.html#Basic-Concepts
+  (evil-set-leader 'normal (kbd "<SPC>"))
+;; Make <leader> act as C-x prefix
+  (evil-define-key 'normal 'global
+    (kbd "<leader>") (lookup-key global-map (kbd "C-x")))
+ (evil-define-key 'normal 'global
+    (kbd "<leader>c") (lookup-key global-map (kbd "C-c")))
+  (define-key evil-insert-state-map (kbd "C-h") 'left-char)
+  (define-key evil-insert-state-map (kbd "C-j") 'next-line)
+  (define-key evil-insert-state-map (kbd "C-k") 'previous-line)
+  (define-key evil-insert-state-map (kbd "C-l") 'right-char)
+  (define-key evil-visual-state-map (kbd "-") #'(lambda ()
+                                                  (interactive)
+                                                  (evil-end-of-line)
+                                                  (evil-backward-char)))
+
+  (define-key evil-normal-state-map (kbd "-") 'evil-end-of-line))
+
+  ;; the redraw-display is for hacking a fix for a graphical bug that i got on windows
+  (if (not (eq system-type 'gnu/linux))
+      (define-key evil-normal-state-map (kbd "}") #'(lambda ()
+                                                      (interactive)
+                                                      (evil-forward-paragraph)
+                                                      (redraw-display)))
+    (define-key evil-normal-state-map (kbd "{") #'(lambda ()
+                                                    (interactive)
+                                                    (evil-backward-paragraph)
+                                                    (redraw-display))))
+
+
+;; this is for puting deletion into the blacl whole register instead o unnamed register
+;; (defun bb/evil-delete (orig-fn beg end &optional type _ &rest args)
+;;   (apply orig-fn beg end type ?_ args))
+;; (advice-add 'evil-delete :around 'bb/evil-delete)
+
+(use-package evil-collection
+  :after evil
+  :ensure t
+  :config
+  (setq evil-collection-key-blacklist (list "SPC")) ;dont steal evil's leader key 
+  (evil-collection-init))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;EMACS CUSTOM OPTIONS
@@ -322,6 +381,25 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
       (dired-sidebar-find-file)
       (kill-buffer buffer-name)))
 
+
+(defun my/dired-sidebar-smart-ret ()
+  "Context-aware RET for dired-sidebar.
+- Folders: Toggle expansion (no new buffer).
+- Files: Open and kill sidebar.
+- .. : Go up directory in sidebar."
+  (interactive)
+  (let ((file (dired-get-filename nil t)))
+    (cond
+     ;; If on ".." or no file, go up
+     ((or (not file) (string-match-p "\\.\\.?$" file))
+      (dired-sidebar-up-directory))
+     ;; If it's a directory, toggle it in-place
+     ((file-directory-p file)
+      (dired-sidebar-subtree-toggle))
+     ;; If it's a file, open it and kill the sidebar
+     (t
+      (dired-sidebar-find-file)))))
+
 (use-package dired
   :config
   ;; put directories first on listing
@@ -337,17 +415,25 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
   :ensure t)
 
 (use-package dired-sidebar
-  :after dired-hacks-utils evil evil-collection dired-subtree
-  :bind (("C-x C-d" . dired-sidebar-toggle-with-current-directory))
+  :after dired-hacks-utils
+  :bind (("C-x C-d" . dired-sidebar-toggle-sidebar))
   :ensure t
-  :commands (dired-sidebar-toggle-with-current-directory)
   :config
-  ;; claude saved me on this one, spend two houers tryingto make this fucking shit work omg
-  (define-key dired-sidebar-mode-map (kbd "RET") #'goto-and-kill-dired-sidebar)
-  (define-key dired-sidebar-mode-map [return] #'goto-and-kill-dired-sidebar)
+  ;; (setq dired-sidebar-use-one-instace t) 
+  (setq dired-sidebar-width 30)
   (evil-define-key 'normal dired-sidebar-mode-map
-    (kbd "RET") #'goto-and-kill-dired-sidebar
-    [return] #'goto-and-kill-dired-sidebar))
+    (kbd "RET") #'my/dired-sidebar-smart-ret
+    [return]    #'my/dired-sidebar-smart-ret))
+
+  
+  ;; :config
+  ;; ;; claude saved me on this one, spend two houers tryingto make this fucking shit work omg
+  ;; (define-key dired-sidebar-mode-map (kbd "RET") #'goto-and-kill-dired-sidebar)
+  ;; (define-key dired-sidebar-mode-map [return] #'goto-and-kill-dired-sidebar)
+  ;; (evil-define-key 'normal dired-sidebar-mode-map
+  ;;   (kbd "RET") #'goto-and-kill-dired-sidebar
+  ;;   [return] #'goto-and-kill-dired-sidebar))
+
 
 ;; (with-eval-after-load 'dired-sidebar
 ;;   (define-key dired-sidebar-mode-map (kbd "RET") #'goto-and-kill-dired-sidebar)
@@ -482,65 +568,6 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
   (company-quickhelp-mode)
   :bind
   (:map company-active-map ("<f1>" . company-quickhelp-manual-begin)))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; EVIL
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(use-package evil
-  :ensure t
-  :init
-  (setq evil-disable-insert-state-bindings t) ; insert state becomes emacs state
-  (setq evil-want-integration t)
-  (setq evil-want-keybinding nil) ;; this is needed for evil-collection
-  :config
-  (evil-mode 1)
-  (setq evil-emacs-state-cursor '((bar . 2)))
-  (setq evil-default-state 'normal)
-
-  ;; custom keybidings for evil
-  ;;;;;i think i can use :map on :bindings here
-  ;; https://www.gnu.org/software/emacs/manual/html_mono/use-package.html#Basic-Concepts
-  (evil-set-leader 'normal (kbd "<SPC>"))
-;; Make <leader> act as C-x prefix
-  (evil-define-key 'normal 'global
-    (kbd "<leader>") (lookup-key global-map (kbd "C-x")))
- (evil-define-key 'normal 'global
-    (kbd "<leader>c") (lookup-key global-map (kbd "C-c")))
-  (define-key evil-insert-state-map (kbd "C-h") 'left-char)
-  (define-key evil-insert-state-map (kbd "C-j") 'next-line)
-  (define-key evil-insert-state-map (kbd "C-k") 'previous-line)
-  (define-key evil-insert-state-map (kbd "C-l") 'right-char)
-  (define-key evil-visual-state-map (kbd "-") #'(lambda ()
-                                                  (interactive)
-                                                  (evil-end-of-line)
-                                                  (evil-backward-char)))
-
-  (define-key evil-normal-state-map (kbd "-") 'evil-end-of-line))
-
-  ;; the redraw-display is for hacking a fix for a graphical bug that i got on windows
-  (if (not (eq system-type 'gnu/linux))
-      (define-key evil-normal-state-map (kbd "}") #'(lambda ()
-                                                      (interactive)
-                                                      (evil-forward-paragraph)
-                                                      (redraw-display)))
-    (define-key evil-normal-state-map (kbd "{") #'(lambda ()
-                                                    (interactive)
-                                                    (evil-backward-paragraph)
-                                                    (redraw-display))))
-
-
-;; this is for puting deletion into the blacl whole register instead o unnamed register
-;; (defun bb/evil-delete (orig-fn beg end &optional type _ &rest args)
-;;   (apply orig-fn beg end type ?_ args))
-;; (advice-add 'evil-delete :around 'bb/evil-delete)
-
-(use-package evil-collection
-  :after evil
-  :ensure t
-  :config
-  (setq evil-collection-key-blacklist (list "SPC")) ;dont steal evil's leader key 
-  (evil-collection-init))
 
 
 
