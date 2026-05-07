@@ -106,6 +106,13 @@
 (add-hook 'sh-mode-hook 'display-line-numbers-mode)
 (add-hook 'sql-mode-hook 'display-line-numbers-mode)
 
+(defun quit-window () 
+ "modified quit window"
+ (interactive)
+ (if (one-window-p)
+     (kill-buffer)
+   (kill-buffer-and-window)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;WINDOW MANAGEMENT
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
