@@ -423,7 +423,8 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
   (setq dired-sidebar-width 30)
   (evil-define-key 'normal dired-sidebar-mode-map
     (kbd "RET") #'my/dired-sidebar-smart-ret
-    [return]    #'my/dired-sidebar-smart-ret))
+    [return]    #'my/dired-sidebar-smart-ret
+    (kbd "C-<return>") #'dired-sidebar-find-file))
 
   
   ;; :config
@@ -533,10 +534,10 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
 ;;while refactoringthis file i think i can use the :map in :bind to set bindings in specific mode
 
 (keymap-global-set "M-<SPC>" 'company-complete)
+(keymap-global-set "C-<tab>" 'company-complete)
 (with-eval-after-load 'company
   (define-key company-active-map
-              (kbd "M-<SPC>")
-              #'company-select-next)
+              (kbd "<tab>") #'company-select-next)
   (define-key company-active-map
               (kbd "<backtab>")
               (lambda ()
@@ -662,3 +663,15 @@ python-shell-virtual-root variable before calling run-python"
              :map vterm-mode-map
              ("<f12>" . delete-window))))
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages nil))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
