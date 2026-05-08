@@ -29,7 +29,7 @@
   (evil-define-key 'normal 'global
     (kbd "<leader>") (lookup-key global-map (kbd "C-x")))
  (evil-define-key 'normal 'global
-    (kbd "<leader>c") (lookup-key global-map (kbd "C-c")))
+    (kbd "<leader> c") (lookup-key global-map (kbd "C-c")))
   (define-key evil-insert-state-map (kbd "C-h") 'left-char)
   (define-key evil-insert-state-map (kbd "C-j") 'next-line)
   (define-key evil-insert-state-map (kbd "C-k") 'previous-line)
@@ -105,6 +105,13 @@
 (add-hook 'python-mode-hook 'display-line-numbers-mode)
 (add-hook 'sh-mode-hook 'display-line-numbers-mode)
 (add-hook 'sql-mode-hook 'display-line-numbers-mode)
+
+(defun quit-window () 
+ "modified quit window"
+ (interactive)
+ (if (one-window-p)
+     (kill-buffer)
+   (kill-buffer-and-window)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;WINDOW MANAGEMENT
@@ -266,6 +273,7 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
 ;;;KEYMAPS
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (global-unset-key (kbd "C-v")) ;;stop emacs from moving when I make a mistake
+(keymap-global-set "C-'" 'org-cycle-agenda-files)
 (keymap-global-set "C-x f" 'find-file)
 (keymap-global-set "C-c b" 'ibuffer)
 (keymap-global-set
@@ -669,6 +677,10 @@ python-shell-virtual-root variable before calling run-python"
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages nil))
+ '(helm-minibuffer-history-key "M-p")
+ '(org-agenda-files
+   '("~/org/gtd/inbox.org" "/home/XQ6460/org/gtd/tasks.org"
+     "/home/XQ6460/org/gtd/projects.org")))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
