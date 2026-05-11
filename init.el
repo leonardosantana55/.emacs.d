@@ -174,7 +174,7 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
 ;(let ((bg "#14181f"))
   (setq modus-vivendi-palette-overrides
         `(
-          (bg-main ,(hex-color-factor bg 1))
+          (bg-main ,(hex-color-factor bg 0.8))
           (bg-active ,(hex-color-factor bg 2.5))
           (bg-inactive ,(hex-color-factor bg 2.1))
           (fg-main "#fcfadc")
@@ -670,20 +670,3 @@ python-shell-virtual-root variable before calling run-python"
       :bind (("<f12>" . vterm)
              :map vterm-mode-map
              ("<f12>" . delete-window))))
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages nil))
- '(helm-minibuffer-history-key "M-p")
- '(org-agenda-files
-   '("~/org/gtd/inbox.org" "/home/XQ6460/org/gtd/tasks.org"
-     "/home/XQ6460/org/gtd/projects.org")))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
