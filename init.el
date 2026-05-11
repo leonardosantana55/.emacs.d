@@ -4,7 +4,7 @@
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
-(package-refresh-contents t)
+;;(package-refresh-contents t) ;; i think this shit was making emacsclient close suddenly
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EVIL
@@ -106,12 +106,13 @@
 (add-hook 'sh-mode-hook 'display-line-numbers-mode)
 (add-hook 'sql-mode-hook 'display-line-numbers-mode)
 
-(defun quit-window () 
- "modified quit window"
- (interactive)
- (if (one-window-p)
-     (kill-buffer)
-   (kill-buffer-and-window)))
+;; this thing was causing a bug on org capture
+;; (defun quit-window () 
+;;  "modified quit window"
+;;  (interactive)
+;;  (if (one-window-p)
+;;      (kill-buffer)
+;;    (kill-buffer-and-window)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;WINDOW MANAGEMENT
@@ -315,6 +316,7 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
 (setq org-hide-emphasis-markers t)
 (setq org-reverse-note-order t) ;; refile adds items to the top
 (setq org-agenda-files '("~/org"))
+;; (setq org-agenda-files '("~/org" "~/org/gtd/inbox.org" "~/org/gtd/tasks.org" "~/org/gtd/projects.org"))
 (setq org-bookmark-names-plist nil) ;;stops org from auto creating bookmarks
 
 (add-hook 'org-mode-hook #'auto-fill-mode) ;;breaks lines automatically
