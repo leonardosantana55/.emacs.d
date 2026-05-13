@@ -315,8 +315,7 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (setq org-hide-emphasis-markers t)
 (setq org-reverse-note-order t) ;; refile adds items to the top
-(setq org-agenda-files '("~/org"))
-;; (setq org-agenda-files '("~/org" "~/org/gtd/inbox.org" "~/org/gtd/tasks.org" "~/org/gtd/projects.org"))
+(setq org-agenda-files '("~/org" "~/org/gtd/inbox.org" "~/org/gtd/tasks.org" "~/org/gtd/projects.org"))
 (setq org-bookmark-names-plist nil) ;;stops org from auto creating bookmarks
 
 (add-hook 'org-mode-hook #'auto-fill-mode) ;;breaks lines automatically
@@ -672,3 +671,4 @@ python-shell-virtual-root variable before calling run-python"
       :bind (("<f12>" . vterm)
              :map vterm-mode-map
              ("<f12>" . delete-window))))
+
