@@ -4,7 +4,11 @@
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
-;;(package-refresh-contents t) ;; i think this shit was making emacsclient close suddenly
+
+;; Ensure use-package is installed
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EVIL
@@ -73,6 +77,8 @@
 (setq initial-scratch-message
       ";; Que para ti, meu Deus, comecem e terminem todas as minhas ações
 ")
+
+(recentf-mode 1)
 (savehist-mode 1) ;;saves clipboard contents accross sessions
 (push 'kill-ring savehist-additional-variables)
 (tool-bar-mode -1) ;;hides toolbar
@@ -658,6 +664,7 @@ python-shell-virtual-root variable before calling run-python"
 (lambda ()
   (eldoc-mode -1)))
 
+(define-key python-mode-map (kbd "<f5>") #'python-shell-send-buffer)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;VTERM
@@ -672,3 +679,36 @@ python-shell-virtual-root variable before calling run-python"
              :map vterm-mode-map
              ("<f12>" . delete-window))))
 
+
+
+;; Configure lsp-mode
+(use-package lsp-mode
+  :ensure t
+  :init
+  ;; Set prefix for LSP actions (e.g., code actions, renaming)
+  (setq lsp-keymap-prefix "C-c l")
+  :hook (;; Trigger lsp-mode automatically in C and C++ files
+         (c-mode . lsp-deferred)
+         (c++-mode . lsp-deferred))
+  :commands (lsp lsp-deferred)
+  :config
+  (setq lsp-enable-on-type-formatting nil))
+
+;; Optional: Add visual enhancements (completion UI, docs on hover)
+(use-package lsp-ui
+  :ensure t
+  :commands lsp-ui-mode)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(company-quickhelp dired-sidebar evil-collection f ht lsp-mode lsp-ui
+                       lv markdown-mode slime-company spinner vterm)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
