@@ -108,7 +108,7 @@
 (add-hook 'lisp-mode-hook 'display-line-numbers-mode)
 (add-hook 'emacs-lisp-mode-hook 'display-line-numbers-mode)
 (add-hook 'c-mode-hook 'display-line-numbers-mode)
-(add-hook 'python-mode-hook 'display-line-numbers-mode)
+(add-hook 'python-ode-hook 'display-line-numbers-mode)
 (add-hook 'sh-mode-hook 'display-line-numbers-mode)
 (add-hook 'sql-mode-hook 'display-line-numbers-mode)
 
@@ -664,51 +664,39 @@ python-shell-virtual-root variable before calling run-python"
 (lambda ()
   (eldoc-mode -1)))
 
-(define-key python-mode-map (kbd "<f5>") #'python-shell-send-buffer)
+;;(define-key python-mode-map (kbd "<f5>") #'python-shell-send-buffer)
 
+
+(if (eq system-type 'gnu/linux)
+    (progn
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;VTERM
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(if (eq system-type 'gnu/linux)
-    (use-package vterm
-      :ensure t
-      :config
-      (setq vterm-shell "/usr/bin/bash")
-      (setq initial-buffer-choice #'vterm)
-      :bind (("<f12>" . vterm)
-             :map vterm-mode-map
-             ("<f12>" . delete-window))))
+      (use-package vterm
+        :ensure t
+        :config
+        (setq vterm-shell "/usr/bin/bash")
+        (setq initial-buffer-choice #'vterm)
+        :bind (("<f12>" . vterm)
+               :map vterm-mode-map
+               ("<f12>" . delete-window)))
 
-
-
-;; Configure lsp-mode
-(use-package lsp-mode
-  :ensure t
-  :init
-  ;; Set prefix for LSP actions (e.g., code actions, renaming)
-  (setq lsp-keymap-prefix "C-c l")
-  :hook (;; Trigger lsp-mode automatically in C and C++ files
-         (c-mode . lsp-deferred)
-         (c++-mode . lsp-deferred))
-  :commands (lsp lsp-deferred)
-  :config
-  (setq lsp-enable-on-type-formatting nil))
-
-;; Optional: Add visual enhancements (completion UI, docs on hover)
-(use-package lsp-ui
-  :ensure t
-  :commands lsp-ui-mode)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(company-quickhelp dired-sidebar evil-collection f ht lsp-mode lsp-ui
-                       lv markdown-mode slime-company spinner vterm)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;LSP-MODE
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+      (use-package lsp-mode
+        :ensure t
+        :init
+        ;; Set prefix for LSP actions (e.g., code actions, renaming)
+        (setq lsp-keymap-prefix "C-c l")
+        :hook (;; Trigger lsp-mode automatically in C and C++ files
+               (c-mode . lsp-deferred)
+               (c++-mode . lsp-deferred))
+        :commands (lsp lsp-deferred)
+        :config
+        (setq lsp-enable-on-type-formatting nil))
+      
+      ;; Optional: Add visual enhancements (completion UI, docs on hover)
+      (use-package lsp-ui
+        :ensure t
+        :commands lsp-ui-mode)))
