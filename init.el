@@ -667,36 +667,80 @@ python-shell-virtual-root variable before calling run-python"
 ;;(define-key python-mode-map (kbd "<f5>") #'python-shell-send-buffer)
 
 
-(if (eq system-type 'gnu/linux)
-    (progn
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;ASM
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; (use-package mos-mode
+;;     :ensure t
+;;     :mode ("\.asm\'" "\.s\'" "\.inc\'")
+;;     :hook (mos-mode . eglot-ensure))
+(add-hook 'asm-mode-hook
+            (lambda ()
+            (setq-local comment-start ";")))
+
+
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;VTERM
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-      (use-package vterm
-        :ensure t
-        :config
-        (setq vterm-shell "/usr/bin/bash")
-        (setq initial-buffer-choice #'vterm)
-        :bind (("<f12>" . vterm)
-               :map vterm-mode-map
-               ("<f12>" . delete-window)))
+(if (eq system-type 'gnu/linux)
+    (use-package vterm
+      :ensure t
+      :config
+      (setq vterm-shell "/usr/bin/bash")
+      (setq initial-buffer-choice #'vterm)
+      :bind (("<f12>" . vterm)
+             :map vterm-mode-map
+             ("<f12>" . delete-window))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;LSP-MODE
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-      (use-package lsp-mode
-        :ensure t
-        :init
-        ;; Set prefix for LSP actions (e.g., code actions, renaming)
-        (setq lsp-keymap-prefix "C-c l")
-        :hook (;; Trigger lsp-mode automatically in C and C++ files
-               (c-mode . lsp-deferred)
-               (c++-mode . lsp-deferred))
-        :commands (lsp lsp-deferred)
-        :config
-        (setq lsp-enable-on-type-formatting nil))
-      
-      ;; Optional: Add visual enhancements (completion UI, docs on hover)
-      (use-package lsp-ui
-        :ensure t
-        :commands lsp-ui-mode)))
+
+
+(use-package eglot
+  :config
+  (add-hook 'eglot-managed-mode-hook (lambda () (eglot-inlay-hints-mode -1))))
+
+;; (use-package eldoc-box
+;;   :hook (eldoc-mode . eldoc-box-hover-mode)
+;;   :custom
+;;   (eldoc-box-cleanup-interval 2)
+;;   (eldoc-box-max-pixel-height 900)
+;;   (eldoc-box-max-pixel-width 1500))
+
+
+
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ;;LSP-MODE
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; (if (eq system-type 'gnu/linux)
+;;     (use-package lsp-mode
+;;       :ensure t
+;;       :init
+;;       ;; Set prefix for LSP actions (e.g., code actions, renaming)
+;;       (setq lsp-keymap-prefix "C-c l")
+;;       :hook (;; Trigger lsp-mode automatically in C and C++ files
+;;              (c-mode . lsp-deferred)
+;;              (c++-mode . lsp-deferred))
+;;       :commands (lsp lsp-deferred)
+;;       :config
+;;       (setq lsp-enable-on-type-formatting nil)))
+  
+;; (if (eq system-type 'gnu/linux)
+;;     (use-package lsp-ui
+;;       :ensure t
+;;       :commands lsp-ui-mode))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(company-quickhelp dired-sidebar evil-collection lsp-ui mos-mode slime-company
+                       vterm)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
