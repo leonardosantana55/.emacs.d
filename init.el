@@ -121,16 +121,6 @@
 ;;    (kill-buffer-and-window)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;WINDOW MANAGEMENT
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(add-to-list 'display-buffer-alist
-             '("\\*vterm*"
-               ;;(display-buffer-full-frame)
-               (display-buffer-at-bottom)
-               (window-height . 12)
-               ))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;MODUS THEME
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun hex-color-factor (hex-color-string factor)
@@ -159,37 +149,38 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
 (setq modus-themes-to-toggle (list 'modus-vivendi 'modus-operandi-tinted))
 ;;(setq modus-vivendi-palette-overrides modus-themes-preset-overrides-faint)
 
+
 (setq modus-themes-common-palette-overrides
       '(
-        ;; (builtin "#5f6879")
-        ;; (comment fg-dim)
+        (builtin fg-main)
+        ;; (cursor blue)
         (comment "#5f6879")
-        (builtin fg-dim)
+        (builtin fg-main)
         (constant fg-main)
-        (docstring red-faint)
+        (docstring fg-main)
         (docmarkup fg-main)
-        (fnname red-intense)
-        (keyword fg-dim)
-        (preprocessor blue-faint)
-        (string yellow-cooler)
+        (fnname fg-main)
+        (keyword fg-main)
+        (preprocessor fg-main)
+        (string fg-alt)
         (type fg-main)
         (variable fg-main)
         (rx-construct fg-main)
         (rx-backslash fg-main)))
 
-(let ((bg "#0e1217"))
-;(let ((bg "#14181f"))
+(let ((bg "#0a0a0a"))
   (setq modus-vivendi-palette-overrides
         `(
-          (bg-main ,(hex-color-factor bg 0.8))
-          (bg-active ,(hex-color-factor bg 2.5))
+          (bg-main, "#000000")
+          (bg-active bg-hl-line)
           (bg-inactive ,(hex-color-factor bg 2.1))
-          (fg-main "#fcfadc")
+          (fg-main "#ffffff")
           (fg-dim ,(hex-color-factor bg 7.5))
+
           ;;(bg-completion bg-inactive)
           ;;(bg-hl-line bg-dim)
-          (bg-paren-match red)
-          (fg-paren-match bg-main)
+          (bg-paren-match blue-intense)
+          (fg-paren-match fg-main)
           (bg-region blue-intense)
           (fg-region fg-main)
           (bg-mode-line-active bg-active)
@@ -234,7 +225,7 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
           ;; (date-weekend fg-dim)
           ;; (name maroon)
           ;; (identifier fg-dim)
-          (fg-line-number-active fg-main)
+          (fg-line-number-active blue-cooler)
           ;; (fg-line-number-inactive ,(hex-color-factor bg 3.5))
           (fg-line-number-inactive "#3f4859")
           (bg-line-number-active unspecified)
@@ -273,6 +264,230 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
           ;; (rainbow-7 blue-warmer)
           ;; (rainbow-8 magenta-faint)
           )))
+
+
+(setq modus-operandi-tinted-palette-overrides
+      `(
+
+          (cursor "#000000")
+;;         ;;(bg-completion bg-inactive)
+;;         ;;(bg-hl-line bg-dim)
+;;         (bg-paren-match blue-intense)
+;;         (fg-paren-match fg-main)
+;;         (bg-region blue-intense)
+;;         (fg-region fg-main)
+;;         (bg-mode-line-active bg-active)
+;;         (fg-mode-line-active fg-active)
+;;         (fg-mode-line-inactive ,(hex-color-factor bg 3.5))
+;;         (border-mode-line-active "#3f4859")
+;;         ;; (border-mode-line-active fg-dim)
+;;         (bg-mode-line-inactive bg-main)
+;;         (border-mode-line-inactive "#3f4859")
+;;         ;; (border-mode-line-inactive fg-dim)
+;;         (bg-tab-bar bg-inactive)
+;;         (bg-tab-current bg-main)
+;;         (bg-tab-other bg-active)
+;;         (fringe bg-main)
+;;         ;; (builtin maroon)
+;;         ;; (comment fg-dim)
+;;         ;; (constant blue-faint)
+;;         ;; (docstring fg-alt)
+;;         ;; (docmarkup magenta-faint)
+;;         ;; (fnname pink)
+;;         ;; (keyword indigo)
+;;         ;; (preprocessor rust)
+;;         ;; (string slate)
+;;         ;; (type cyan-faint)
+;;         ;; (variable cyan-faint)
+;;         ;; (rx-construct gold)
+;;         ;; (rx-backslash olive)
+;;         ;; (underline-err red-faint)
+;;         ;; (underline-warning yellow-faint)
+;;         ;; (underline-note cyan-faint)
+;;         ;; (bg-button-active bg-main)
+;;         ;; (fg-button-active fg-main)
+;;         ;; (bg-button-inactive bg-inactive)
+;;         ;; (fg-button-inactive "gray50")
+;;         ;; (date-common cyan-faint)
+;;         ;; (date-deadline red-faint)
+;;         ;; (date-event fg-alt)
+;;         ;; (date-holiday magenta)
+;;         ;; (date-now fg-main)
+;;         ;; (date-scheduled yellow-faint)
+;;         ;; (date-weekday fg-dim)
+;;         ;; (date-weekend fg-dim)
+;;         ;; (name maroon)
+;;         ;; (identifier fg-dim)
+;;         (fg-line-number-active blue-cooler)
+;;         ;; (fg-line-number-inactive ,(hex-color-factor bg 3.5))
+         (fg-line-number-inactive "#3f4859")
+         (bg-line-number-active unspecified)
+         (bg-line-number-inactive bg-main)
+;;         ;; (fg-link blue-faint)
+;;         ;; (bg-link unspecified)
+;;         ;; (underline-link bg-active)
+;;         ;; (fg-link-symbolic cyan-faint)
+;;         ;; (bg-link-symbolic unspecified)
+;;         ;; (underline-link-symbolic bg-active)
+;;         ;; (fg-link-visited magenta-faint)
+;;         ;; (bg-link-visited unspecified)
+;;         ;; (underline-link-visited bg-active)
+;;         ;; (mail-cite-0 cyan-faint)
+;;         ;; (mail-cite-1 yellow-faint)
+;;         ;; (mail-cite-2 green-faint)
+;;         ;; (mail-cite-3 red-faint)
+;;         ;; (mail-part olive)
+;;         ;; (mail-recipient indigo)
+;;         ;; (mail-subject maroon)
+;;         ;; (mail-other slate)
+;;         ;; (fg-prompt cyan-faint)
+;;         ;; (fg-prose-code olive)
+;;         ;; (fg-prose-macro indigo)
+;;         ;; (fg-prose-verbatim maroon)
+;;         ;; (prose-done green-faint)
+;;         ;; (prose-tag rust)
+;;         ;; (prose-todo red-faint)
+;;         ;; (rainbow-0 fg-main)
+;;         ;; (rainbow-1 magenta)
+;;         ;; (rainbow-2 cyan)
+;;         ;; (rainbow-3 red-faint)
+;;         ;; (rainbow-4 yellow-faint)
+;;         ;; (rainbow-5 magenta-cooler)
+;;         ;; (rainbow-6 green)
+;;         ;; (rainbow-7 blue-warmer)
+;;         ;; (rainbow-8 magenta-faint)
+        ))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+;; (setq modus-themes-common-palette-overrides
+;;       '(
+;;         ;; (builtin "#5f6879")
+;;         ;; (comment fg-dim)
+;;         (comment "#5f6879")
+;;         (builtin fg-dim)
+;;         (constant fg-main)
+;;         (docstring red-faint)
+;;         (docmarkup fg-main)
+;;         (fnname red-intense)
+;;         (keyword fg-dim)
+;;         (preprocessor blue-faint)
+;;         (string yellow-cooler)
+;;         (type fg-main)
+;;         (variable fg-main)
+;;         (rx-construct fg-main)
+;;         (rx-backslash fg-main)))
+
+;; (let ((bg "#0e1217"))
+;; ;(let ((bg "#14181f"))
+;;   (setq modus-vivendi-palette-overrides
+;;         `(
+;;           (bg-main ,(hex-color-factor bg 0.0))
+;;           (bg-active ,(hex-color-factor bg 2.5))
+;;           (bg-inactive ,(hex-color-factor bg 2.1))
+;;           (fg-main "#fcfadc")
+;;           (fg-dim ,(hex-color-factor bg 7.5))
+;;           ;;(bg-completion bg-inactive)
+;;           ;;(bg-hl-line bg-dim)
+;;           (bg-paren-match red)
+;;           (fg-paren-match bg-main)
+;;           (bg-region blue-intense)
+;;           (fg-region fg-main)
+;;           (bg-mode-line-active bg-active)
+;;           (fg-mode-line-active fg-active)
+;;           (fg-mode-line-inactive ,(hex-color-factor bg 3.5))
+;;           (border-mode-line-active "#3f4859")
+;;           ;; (border-mode-line-active fg-dim)
+;;           (bg-mode-line-inactive bg-main)
+;;           (border-mode-line-inactive "#3f4859")
+;;           ;; (border-mode-line-inactive fg-dim)
+;;           (bg-tab-bar bg-inactive)
+;;           (bg-tab-current bg-main)
+;;           (bg-tab-other bg-active)
+;;           (fringe bg-main)
+;;           ;; (builtin maroon)
+;;           ;; (comment fg-dim)
+;;           ;; (constant blue-faint)
+;;           ;; (docstring fg-alt)
+;;           ;; (docmarkup magenta-faint)
+;;           ;; (fnname pink)
+;;           ;; (keyword indigo)
+;;           ;; (preprocessor rust)
+;;           ;; (string slate)
+;;           ;; (type cyan-faint)
+;;           ;; (variable cyan-faint)
+;;           ;; (rx-construct gold)
+;;           ;; (rx-backslash olive)
+;;           ;; (underline-err red-faint)
+;;           ;; (underline-warning yellow-faint)
+;;           ;; (underline-note cyan-faint)
+;;           ;; (bg-button-active bg-main)
+;;           ;; (fg-button-active fg-main)
+;;           ;; (bg-button-inactive bg-inactive)
+;;           ;; (fg-button-inactive "gray50")
+;;           ;; (date-common cyan-faint)
+;;           ;; (date-deadline red-faint)
+;;           ;; (date-event fg-alt)
+;;           ;; (date-holiday magenta)
+;;           ;; (date-now fg-main)
+;;           ;; (date-scheduled yellow-faint)
+;;           ;; (date-weekday fg-dim)
+;;           ;; (date-weekend fg-dim)
+;;           ;; (name maroon)
+;;           ;; (identifier fg-dim)
+;;           (fg-line-number-active fg-main)
+;;           ;; (fg-line-number-inactive ,(hex-color-factor bg 3.5))
+;;           (fg-line-number-inactive "#3f4859")
+;;           (bg-line-number-active unspecified)
+;;           (bg-line-number-inactive bg-main)
+;;           ;; (fg-link blue-faint)
+;;           ;; (bg-link unspecified)
+;;           ;; (underline-link bg-active)
+;;           ;; (fg-link-symbolic cyan-faint)
+;;           ;; (bg-link-symbolic unspecified)
+;;           ;; (underline-link-symbolic bg-active)
+;;           ;; (fg-link-visited magenta-faint)
+;;           ;; (bg-link-visited unspecified)
+;;           ;; (underline-link-visited bg-active)
+;;           ;; (mail-cite-0 cyan-faint)
+;;           ;; (mail-cite-1 yellow-faint)
+;;           ;; (mail-cite-2 green-faint)
+;;           ;; (mail-cite-3 red-faint)
+;;           ;; (mail-part olive)
+;;           ;; (mail-recipient indigo)
+;;           ;; (mail-subject maroon)
+;;           ;; (mail-other slate)
+;;           ;; (fg-prompt cyan-faint)
+;;           ;; (fg-prose-code olive)
+;;           ;; (fg-prose-macro indigo)
+;;           ;; (fg-prose-verbatim maroon)
+;;           ;; (prose-done green-faint)
+;;           ;; (prose-tag rust)
+;;           ;; (prose-todo red-faint)
+;;           ;; (rainbow-0 fg-main)
+;;           ;; (rainbow-1 magenta)
+;;           ;; (rainbow-2 cyan)
+;;           ;; (rainbow-3 red-faint)
+;;           ;; (rainbow-4 yellow-faint)
+;;           ;; (rainbow-5 magenta-cooler)
+;;           ;; (rainbow-6 green)
+;;           ;; (rainbow-7 blue-warmer)
+;;           ;; (rainbow-8 magenta-faint)
+;;           )))
 
 (load-theme 'modus-vivendi)
 
@@ -424,10 +639,19 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
   (add-hook 'dired-mode-hook 'dired-omit-mode); hide backup files
   (add-hook 'dired-mode-hook 'hl-line-mode); highligths line in dired
   (add-hook 'dired-mode-hook 'dired-hide-details-mode); bound to "("
-  (setq dired-listing-switches "-vAFla"))
+  (setq dired-listing-switches "-alh --group-directories-first")
+  ;;(setq dired-listing-switches "-vAFla")
+  )
 
 (use-package dired-hacks-utils
   :ensure t)
+
+(use-package dired-x
+  :ensure nil 
+  :config
+  ;; Hide uninteresting files by default
+  (setq-default dired-omit-files-p t)
+  (add-to-list 'dired-omit-extensions ".DS_Store"))
 
 (use-package dired-sidebar
   :after dired-hacks-utils
@@ -674,9 +898,14 @@ python-shell-virtual-root variable before calling run-python"
 ;;     :ensure t
 ;;     :mode ("\.asm\'" "\.s\'" "\.inc\'")
 ;;     :hook (mos-mode . eglot-ensure))
+;; (add-hook 'asm-mode-hook
+;;             (lambda ()
+;;             (setq-local comment-start ";")))
+
 (add-hook 'asm-mode-hook
-            (lambda ()
-            (setq-local comment-start ";")))
+          (lambda ()
+            (electric-indent-local-mode -1)
+            (setq evil-auto-indent nil)))
 
 
 
@@ -690,6 +919,20 @@ python-shell-virtual-root variable before calling run-python"
       :config
       (setq vterm-shell "/usr/bin/bash")
       (setq initial-buffer-choice #'vterm)
+      (add-to-list 'display-buffer-alist
+                   '("\\*vterm*"
+                     ;;(display-buffer-full-frame)
+                     (display-buffer-at-bottom)
+                     (window-height . 0.7)
+                     ;; (display-buffer-in-side-window)
+                     ;; (side . right)
+                     ;; (slot . 1)
+                     ;; (window-width . 0.5)
+                     ))
+
+
+
+      
       :bind (("<f12>" . vterm)
              :map vterm-mode-map
              ("<f12>" . delete-window))))
@@ -713,34 +956,54 @@ python-shell-virtual-root variable before calling run-python"
 ;; ;;LSP-MODE
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; (if (eq system-type 'gnu/linux)
-;;     (use-package lsp-mode
-;;       :ensure t
-;;       :init
-;;       ;; Set prefix for LSP actions (e.g., code actions, renaming)
-;;       (setq lsp-keymap-prefix "C-c l")
-;;       :hook (;; Trigger lsp-mode automatically in C and C++ files
-;;              (c-mode . lsp-deferred)
-;;              (c++-mode . lsp-deferred))
-;;       :commands (lsp lsp-deferred)
-;;       :config
-;;       (setq lsp-enable-on-type-formatting nil)))
+(if (eq system-type 'gnu/linux)
+    (use-package lsp-mode
+      :ensure t
+      :init
+      ;; Set prefix for LSP actions (e.g., code actions, renaming)
+      (setq lsp-keymap-prefix "C-c l")
+      ;; :hook (;; Trigger lsp-mode automatically in C and C++ files
+      ;;        (c-mode . lsp-deferred)
+      ;;        (c++-mode . lsp-deferred))
+      :commands (lsp lsp-deferred)
+      :config
+      (setq lsp-enable-on-type-formatting nil)
+      (add-to-list 'lsp-language-id-configuration '(asm-mode . "asm"))))
   
-;; (if (eq system-type 'gnu/linux)
-;;     (use-package lsp-ui
-;;       :ensure t
-;;       :commands lsp-ui-mode))
+(if (eq system-type 'gnu/linux)
+    (use-package lsp-ui
+      :ensure t
+      :commands lsp-ui-mode))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(company-quickhelp dired-sidebar evil-collection lsp-ui mos-mode slime-company
-                       vterm)))
+   '(company-quickhelp dired-sidebar dired-x evil-collection lsp-docker
+                       lsp-ui mos-mode nasm-mode slime-company
+                       treemacs treesit-auto vterm)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+(use-package eglot
+  :ensure t
+  :config
+  ;; Associate asm-mode with the asm-lsp binary
+  (add-to-list 'eglot-server-programs
+               '(asm-mode . ("asm-lsp"))))
+
+(use-package treesit-auto
+  :custom
+  (treesit-auto-install 'prompt)
+  :config
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode))
+(use-package mos-mode
+  :ensure t)
+
