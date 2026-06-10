@@ -731,6 +731,36 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
 (setq completions-sort #'historical)
 (setq completions-max-height 9)
 
+
+(defun list-unwanted-buffers (input-list)
+  "Create a list with buffers that should be hidden with switch-to-buffer function"
+  (let ((unwanted-buffers nil))
+    (dolist (item input-list)
+      (if
+          (with-current-buffer (get-buffer item) (derived-mode-p 'dired-mode))
+          (add-to-list 'unwanted-buffers item)
+        (if (string-match-p "^\\*.*\\*$" item)
+            (add-to-list 'unwanted-buffers item))))
+    unwanted-buffers))
+
+;; ai slop
+(defun my-fido-filter-buffers (orig-fun &rest args)
+  "Filter out uninteresting buffers from fido-mode completion list."
+  (let ((read-buffer-completion-ignore-case t))
+    ;; We wrap the execution and filter the allowed candidates predicate
+    (cl-letf* ((old-predicate (nth 3 args))
+               ((nth 3 args)
+                (lambda (buf)
+                  (let ((name (if (stringp buf) buf (car buf))))
+                    (and (not (member name
+                                      (list-unwanted-buffers
+                                       (mapcar #'buffer-name (buffer-list)))))
+                         (if old-predicate (funcall old-predicate buf) t))))))
+      (apply orig-fun args))))
+
+;; Apply this filtering specifically to buffer switching
+(advice-add 'read-buffer :around #'my-fido-filter-buffers)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;SLIME
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -905,7 +935,14 @@ python-shell-virtual-root variable before calling run-python"
 (add-hook 'asm-mode-hook
           (lambda ()
             (electric-indent-local-mode -1)
-            (setq evil-auto-indent nil)))
+            (setq-local electric-indent-mode nil)
+            (setq evil-auto-indent nil)
+            (setq-local indent-line-function #'indent-relative-first-indent-point)
+            (local-set-key (kbd "RET") #'newline-and-indent)
+            (evil-define-key 'insert asm-mode-map
+              (kbd "RET") #'newline-and-indent
+              [return]    #'newline-and-indent)))
+
 
 
 
@@ -919,6 +956,7 @@ python-shell-virtual-root variable before calling run-python"
       :config
       (setq vterm-shell "/usr/bin/bash")
       (setq initial-buffer-choice #'vterm)
+      (setq vterm-set-bold-highbright t)
       (add-to-list 'display-buffer-alist
                    '("\\*vterm*"
                      ;;(display-buffer-full-frame)
@@ -998,12 +1036,15 @@ python-shell-virtual-root variable before calling run-python"
   (add-to-list 'eglot-server-programs
                '(asm-mode . ("asm-lsp"))))
 
+
+
 (use-package treesit-auto
   :custom
   (treesit-auto-install 'prompt)
   :config
   (treesit-auto-add-to-auto-mode-alist 'all)
   (global-treesit-auto-mode))
+
 (use-package mos-mode
   :ensure t)
 
