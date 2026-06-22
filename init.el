@@ -78,6 +78,25 @@
       ";; Que para ti, meu Deus, comecem e terminem todas as minhas ações
 ")
 
+(defun custom-backspace-delete ()
+  "Delete tabs to the left when using spaces"
+  (interactive)
+  (let (
+        (current-tab-width (symbol-value 'tab-width))
+        (column (current-column)))
+    (if
+        (and
+         (>= column current-tab-width)
+         (string=
+          (buffer-substring-no-properties (- (point) current-tab-width) (point))
+          (make-string current-tab-width ?\s)))
+        (delete-char (* current-tab-width -1))
+      (delete-char -1))))
+
+
+
+
+
 (recentf-mode 1)
 (savehist-mode 1) ;;saves clipboard contents accross sessions
 (push 'kill-ring savehist-additional-variables)
@@ -91,6 +110,7 @@
 (setq ring-bell-function 'ignore) ;;stops annoying sound
 (setq-default tab-width 4)
 (setq-default indent-tabs-mode nil); Use spaces, not tabs, for indentation.
+(global-set-key (kbd "DEL") 'custom-backspace-delete)
 (setq fill-column 80)
 (setq blink-cursor-blinks 0) ;;never stop blinking 
 (setq completions-format 'one-column) ;;'horizontal, or 'one-column
@@ -101,6 +121,7 @@
 (setq scroll-step 1) ;;step
 (setq inhibit-startup-screen t) ;;yes
 (setq help-window-select t)  ;;Switch focus to help buffers automatically
+(save-place-mode 1) ;restore cursor where left off when switch buffers or reopen files
 
 (set-face-attribute 'default nil :font "Noto Sans Mono" :height 120)
 (set-face-attribute 'italic nil :family "Noto Mono" :slant 'italic :height 120)
@@ -111,6 +132,7 @@
 (add-hook 'python-ode-hook 'display-line-numbers-mode)
 (add-hook 'sh-mode-hook 'display-line-numbers-mode)
 (add-hook 'sql-mode-hook 'display-line-numbers-mode)
+(add-hook 'asm-mode-hook 'display-line-numbers-mode)
 
 ;; this thing was causing a bug on org capture
 ;; (defun quit-window () 
@@ -166,7 +188,10 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
         (type fg-main)
         (variable fg-main)
         (rx-construct fg-main)
-        (rx-backslash fg-main)))
+        (rx-backslash fg-main)
+        ;; (fg-term-yellow "#FFE91F")
+        ;; (bg-term-yellow "#FFE91F")
+        ))
 
 (let ((bg "#0a0a0a"))
   (setq modus-vivendi-palette-overrides
