@@ -1067,4 +1067,4 @@ python-shell-virtual-root variable before calling run-python"
       :custom
       (treesit-auto-install 'prompt)
       :config
-      (treesit-auto-add-to-auto-mode-alist 'all)
+      (treesit-auto-add-to-auto-mode-alist 'all)))
