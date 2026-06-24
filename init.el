@@ -998,12 +998,12 @@ python-shell-virtual-root variable before calling run-python"
   (add-to-list 'eglot-server-programs
                '(asm-mode . ("asm-lsp"))))
 
-(use-package treesit-auto
-  :custom
-  (treesit-auto-install 'prompt)
-  :config
-  (treesit-auto-add-to-auto-mode-alist 'all)
-  (global-treesit-auto-mode))
-(use-package mos-mode
-  :ensure t)
+
+(if (eq system-type 'gnu/linux)
+    (use-package treesit-auto
+      :custom
+      (treesit-auto-install 'prompt)
+      :config
+      (treesit-auto-add-to-auto-mode-alist 'all)
+      (global-treesit-auto-mode)))
 
