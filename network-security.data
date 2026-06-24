@@ -1,0 +1,6 @@
+;;;; -*- mode: lisp-data -*-
+(
+ (:id "sha1:6d4eb958390599243ba9f5035cb671fa8dd6a93a" :fingerprints ("sha1:c3:84:0a:09:28:2d:92:95:c8:11:c3:e4:97:82:00:7d:5c:a6:dd:eb" "sha1:3c:d5:45:a8:6e:b6:1f:ea:84:17:e8:8a:18:3c:00:c0:26:91:fb:ef") :host "elpa.gnu.org:443" :conditions (:unknown-ca :invalid :same-cert))
+ (:id "sha1:1dd1af4a16d2ed2802679be2de23161d1f79b3c7" :fingerprints ("sha1:c3:84:0a:09:28:2d:92:95:c8:11:c3:e4:97:82:00:7d:5c:a6:dd:eb" "sha1:3c:d5:45:a8:6e:b6:1f:ea:84:17:e8:8a:18:3c:00:c0:26:91:fb:ef") :host "elpa.nongnu.org:443" :conditions (:unknown-ca :invalid :same-cert))
+ (:id "sha1:85b31c268009209a8d3c5387033b219264f7e62b" :fingerprints ("sha1:2a:a0:da:a0:f5:8d:a0:3e:9f:17:f9:bc:91:61:c0:5f:02:43:c9:d9" "sha1:a6:2f:16:65:a5:5e:7f:61:a2:09:3a:12:b7:dc:bd:7d:b9:1a:65:fc") :host "melpa.org:443" :conditions (:unknown-ca :invalid :same-cert))
+)

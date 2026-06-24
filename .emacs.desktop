@@ -1,0 +1,55 @@
+;; -*- mode: emacs-lisp; lexical-binding:t; coding: utf-8-emacs; -*-
+;; --------------------------------------------------------------------------
+;; Desktop File for Emacs
+;; --------------------------------------------------------------------------
+;; Created Thu Apr 30 15:31:14 2026
+;; Desktop file format version 208
+;; Emacs version 30.2
+
+;; Global section:
+(setq desktop-saved-frameset [frameset 1 (27123 40946 944380 800000) (desktop . "208") "D92+XQ6460@W3V3WZG3" nil nil ((((minibuffer . t) (undecorated) (skip-taskbar) (font . "-outline-Noto Sans Mono-regular-normal-normal-mono-16-*-*-*-p-*-iso8859-1") (border-width . 0) (internal-border-width . 0) (child-frame-border-width) (right-divider-width . 0) (bottom-divider-width . 0) (vertical-scroll-bars) (horizontal-scroll-bars) (foreground-color . "#fcfadc") (background-color . "#0e1217") (mouse-color . "black") (border-color . "black") (screen-gamma) (line-spacing) (left-fringe . 8) (right-fringe . 8) (no-focus-on-map) (no-accept-focus) (no-special-glyphs) (alpha-background) (alpha) (menu-bar-lines . 0) (tab-bar-lines . 0) (height . 38) (tool-bar-lines . 0) (inhibit-double-buffering) (title) (icon-type) (auto-raise) (auto-lower) (cursor-type . box) (scroll-bar-width . 17) (scroll-bar-height . 17) (fullscreen . maximized) (z-group) (visibility . t) (scroll-bar-foreground . "#646464") (scroll-bar-background . "#0e1217") (display-type . color) (background-mode . dark) (cursor-color . "#fcfadc") (font-parameter) (environment) (last-focus-update . t) (tabs (current-tab (name . ":~/myprograms/DW-test/") (explicit-name))) (frameset--id . "6F5C-7A15-5768-A145") (frameset--mini t . t) (width . 190) (modeline . t) (unsplittable) (left + -8) (top + -8) (icon-name) (display . "w32") (explicit-name) (tool-bar-position . top)) ((min-height . 4) (min-width . 10) (min-height-ignore . 3) (min-width-ignore . 4) (min-height-safe . 1) (min-width-safe . 2) (min-pixel-height . 104) (min-pixel-width . 100) (min-pixel-height-ignore . 78) (min-pixel-width-ignore . 40) (min-pixel-height-safe . 26) (min-pixel-width-safe . 20)) leaf (pixel-width . 1920) (pixel-height . 983) (total-width . 192) (total-height . 38) (normal-height . 1.0) (normal-width . 1.0) (buffer "init.el" (selected . t) (hscroll . 0) (fringes 8 8 nil nil) (margins nil) (scroll-bars nil 0 t nil 0 t nil) (vscroll . 0) (dedicated) (point . 21597) (start . 20819)) (prev-buffers ("*scratch*" 1 318) ("init.el" 21189 21581))))])
+(setq desktop-missing-file-warning nil)
+(setq tags-file-name nil)
+(setq tags-table-list nil)
+(setq search-ring '(#("e" 0 1 (isearch-case-fold-search t isearch-regexp-function nil)) #("evil" 0 4 (isearch-case-fold-search t isearch-regexp-function nil)) #("dired" 0 5 (isearch-case-fold-search t isearch-regexp-function nil)) #("dired-sidebar" 0 13 (isearch-case-fold-search t isearch-regexp-function nil)) #("dired-side" 0 10 (isearch-case-fold-search t isearch-regexp-function nil)) #("RET" 0 3 (isearch-case-fold-search nil isearch-regexp-function #[513 "\300\301\302\300\303\304\300\305\306\307!###\207" [replace-regexp-in-string "\"" "[\"“”]" "'" "['’]" "`" "[`‘]" regexp-quote] 13 ("isearch.elc" . 175995)])) #("dired}}}" 0 8 (isearch-case-fold-search t isearch-regexp-function nil)) #("C-" 0 2 (isearch-case-fold-search nil isearch-regexp-function nil)) #("M-." 0 3 (isearch-case-fold-search nil isearch-regexp-function #[513 "\300\301\302\300\303\304\300\305\306\307!###\207" [replace-regexp-in-string "\"" "[\"“”]" "'" "['’]" "`" "[`‘]" regexp-quote] 13 ("isearch.elc" . 175995)])) #("filepath" 0 8 (isearch-case-fold-search t isearch-regexp-function nil)) #("stash" 0 5 (isearch-case-fold-search t isearch-regexp-function nil)) #("org" 0 3 (isearch-case-fold-search t isearch-regexp-function #[513 "\300\301\302\300\303\304\300\305\306\307!###\207" [replace-regexp-in-string "\"" "[\"“”]" "'" "['’]" "`" "[`‘]" regexp-quote] 13 ("isearch.elc" . 175995)])) #("0018w00002zk0w6qaj" 0 18 (isearch-case-fold-search t isearch-regexp-function nil)) #("0011i00000jejsjqau" 0 18 (isearch-case-fold-search t isearch-regexp-function nil)) #("evil-co" 0 7 (isearch-case-fold-search t isearch-regexp-function nil)) #("keybindings" 0 11 (isearch-case-fold-search t isearch-regexp-function nil))))
+(setq regexp-search-ring nil)
+(setq register-alist '((48 . "<return> runs the command dired-sidebar-find-file, which is an\ninteractive byte-code-function in ‘dired-sidebar.el’.\n\nIt is bound to <return>, RET, <normal-state> <return> and\n<normal-state> RET.\n\n(dired-sidebar-find-file &optional DIR)\n\nWrapper over ‘dired-find-file’.\nOptional argument DIR: Find file using DIR if available.\n\nWith prefix argument, use ‘dired-sidebar-alternate-select-window-function’ for\nwindow selection.\n\n[back]\n")))
+(setq file-name-history '("~/.emacs.d/./" "~/.emacs.d/init.el" "~/emacs.d/init.el" "~/" "~/myprograms/DW-test/modeling/dim_date.sql" "~/myprograms/DW-test/./" "~/myprograms/DW-test/el/staging_insert_csv.py" "~/myprograms/DW-test/automation/./" "~/myprograms/DW-test/./" "~/myprograms/DW-test/el/__init__.py" "~/myprograms/DW-test/automation/run.py" "~/myprograms/DW-test/" "~/myprograms/DW-test/el/staging_insert.py" "~/myprograms/DW-test/./" "/./" "~/myprograms/DW-test/utils/" "~/myprograms/DW-test/automation/el/" "~/myprograms/DW-test/automation/el" "~/myprograms/DW-test/automation" "~/myprograms/DW-test/scripting" "~/myprograms/DW-test/el/" "~/myprograms/DW-test/el/staging_insert.py" "~/myprograms/DW-test/" "~/myprograms/DW-test/el/./" "~/myprograms/DW-test/utils/" "~/myprograms/DW-test/el/staging_insert.py" "~/myprograms/DW-test/utils/" "~/myprograms/DW-test/el/flatten_ibge.sql" "~/myprograms/DW-test/modeling/dim_geo.sql" "~/myprograms/DW-test/modeling/" "~/myprograms/DW-test/el/" "~/myprograms/DW-test/el/staging_insert_ibge.py" "~/myprograms/DW-test/el/" "~/myprograms/DW-test/el" "~/myprograms/DW-test/utils/./" "~/myprograms/DW-test/utils" "~/myprograms/DW-test/./" "~/myprograms/DW-test/staging/./" "~/myprograms/DW-test/modeling/./" "~/org/notes/studies/./" "~/myprograms/DW-test/q.sql" "~/org/gtd/tasks.org" "~/org/./" "~/.emacs.d/./" "~/myprograms/DW-test/staging/staging_insert_ibge.py" "~/myprograms/DW-test/modeling/dim_date.sql" "~/myprograms/DW-test/bus-matrix.org" "~/myprograms/DW-test/./" "~/check.sh" "~/update.sh" "~/temp.sh" "~/pluggy-me.sh" "~/temp.sh" "~/.bashrc" "~/org/notes/studies/DWTK.org" "~/.emacs.d/./" "~/myprograms/DW-test/./" "~/myprograms/DW-test/procedures.sql" "~/.emacs.d/./" "~/org/gtd/someday.org" "~/myprograms/DW-test/procedures.sql" "~/myprograms/DW-test/./" "~/.emacs.d/./" "~/myprograms/DW-test/./" "~/myprograms/DW-test/procedures.sql~" "~/myprograms/DW-test/./" "~/myprograms/DW-test/staging/./" "~/myprograms/DW-test/./" "~/myprograms/DW-test/modeling/fact_leadhistory.sql" "~/myprograms/DW-test/./" "~/myprograms/DW-test/modeling/./" "~/myprograms/DW-test/modeling/prep/dim/./" "~/.emacs.d/./" "~/myprograms/DW-test/debug.py" "~/myprograms/DW-test/credentials/postgres.py" "~/myprograms/DW-test/staging_insert.py" "~/myprograms/DW-test/modeling/prep/dim/dim_lead.sql" "~/org/notes/work.org" "~/org/notes/generic.org" "~/myprograms/DW-test/modeling/prep/fact/fact_leadhistory.sql" "~/myprograms/DW-test/test.sql" "~/myprograms/DW-test/modeling/teste.sql" "~/myprograms/DW-test/credentials/test.sql" "~/myprograms/DW-test/credentials/__init__.py" "~/myprograms/DW-test/staging/load_csv.py" "~/myprograms/DW-test/staging/utils.py" "~/myprograms/DW-test/staging/load.py" "~/myprograms/DW-test/staging/extract.py" "~/myprograms/DW-test/credentials/postgres.py" "~/myprograms/DW-test/modeling/serving/" "~/myprograms/DW-test/modeling/transformation/wrangling/serving/" "~/myprograms/DW-test/modeling/transformation/wrangling/agregations/" "~/myprograms/DW-test/modeling/transformation/wrangling/intermediary/" "~/myprograms/DW-test/modeling/transformation/wrangling/" "~/myprograms/DW-test/modeling/transformation/filtering/" "~/myprograms/DW-test/modeling/transformation/cleansing/" "~/myprograms/DW-test/modeling/transformation/" "~/myprograms/DW-test/modeling/prep/fact/" "~/myprograms/DW-test/modeling/prep/dim/" "~/myprograms/DW-test/modeling/prep/"))
+
+;; Buffer section -- buffers listed in same order as in buffer list:
+(desktop-create-buffer 208
+  "/home/XQ6460/.emacs.d/init.el"
+  "init.el"
+  'emacs-lisp-mode
+  '(font-lock-mode eldoc-mode evil-local-mode evil-collection-unimpaired-mode company-mode display-line-numbers-mode)
+  21597
+  '(25385 nil)
+  nil
+  nil
+  '((buffer-display-time 27123 40941 822842 700000) (buffer-file-coding-system . utf-8-dos) (overwrite-mode))
+  '((mark-ring (21582 25818 2 21581 301))))
+
+(desktop-create-buffer 208
+  nil
+  ":~/myprograms/DW-test/"
+  'dired-sidebar-mode
+  '(font-lock-mode evil-local-mode evil-collection-unimpaired-mode company-mode dired-omit-mode hl-line-mode dired-hide-details-mode)
+  743
+  '(nil nil)
+  t
+  '("/home/XQ6460/myprograms/DW-test/")
+  '((buffer-display-time 27123 40745 974224 100000) (overwrite-mode))
+  '((mark-ring nil)))
+
+(desktop-create-buffer 208
+  nil
+  ":~/.emacs.d/"
+  'dired-sidebar-mode
+  '(font-lock-mode evil-local-mode evil-collection-unimpaired-mode company-mode dired-omit-mode hl-line-mode dired-hide-details-mode)
+  700
+  '(nil nil)
+  t
+  '("/home/XQ6460/.emacs.d/")
+  '((buffer-display-time 27123 40626 640626 200000) (overwrite-mode))
+  '((mark-ring nil)))
+

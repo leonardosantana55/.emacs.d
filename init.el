@@ -78,6 +78,25 @@
       ";; Que para ti, meu Deus, comecem e terminem todas as minhas ações
 ")
 
+(defun custom-backspace-delete ()
+  "Delete tabs to the left when using spaces"
+  (interactive)
+  (let (
+        (current-tab-width (symbol-value 'tab-width))
+        (column (current-column)))
+    (if
+        (and
+         (>= column current-tab-width)
+         (string=
+          (buffer-substring-no-properties (- (point) current-tab-width) (point))
+          (make-string current-tab-width ?\s)))
+        (delete-char (* current-tab-width -1))
+      (delete-char -1))))
+
+
+
+
+
 (recentf-mode 1)
 (savehist-mode 1) ;;saves clipboard contents accross sessions
 (push 'kill-ring savehist-additional-variables)
@@ -91,6 +110,7 @@
 (setq ring-bell-function 'ignore) ;;stops annoying sound
 (setq-default tab-width 4)
 (setq-default indent-tabs-mode nil); Use spaces, not tabs, for indentation.
+(global-set-key (kbd "DEL") 'custom-backspace-delete)
 (setq fill-column 80)
 (setq blink-cursor-blinks 0) ;;never stop blinking 
 (setq completions-format 'one-column) ;;'horizontal, or 'one-column
@@ -101,6 +121,7 @@
 (setq scroll-step 1) ;;step
 (setq inhibit-startup-screen t) ;;yes
 (setq help-window-select t)  ;;Switch focus to help buffers automatically
+(save-place-mode 1) ;restore cursor where left off when switch buffers or reopen files
 
 (set-face-attribute 'default nil :font "Noto Sans Mono" :height 120)
 (set-face-attribute 'italic nil :family "Noto Mono" :slant 'italic :height 120)
@@ -111,6 +132,7 @@
 (add-hook 'python-ode-hook 'display-line-numbers-mode)
 (add-hook 'sh-mode-hook 'display-line-numbers-mode)
 (add-hook 'sql-mode-hook 'display-line-numbers-mode)
+(add-hook 'asm-mode-hook 'display-line-numbers-mode)
 
 ;; this thing was causing a bug on org capture
 ;; (defun quit-window () 
@@ -166,7 +188,10 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
         (type fg-main)
         (variable fg-main)
         (rx-construct fg-main)
-        (rx-backslash fg-main)))
+        (rx-backslash fg-main)
+        ;; (fg-term-yellow "#FFE91F")
+        ;; (bg-term-yellow "#FFE91F")
+        ))
 
 (let ((bg "#0a0a0a"))
   (setq modus-vivendi-palette-overrides
@@ -731,6 +756,36 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
 (setq completions-sort #'historical)
 (setq completions-max-height 9)
 
+
+(defun list-unwanted-buffers (input-list)
+  "Create a list with buffers that should be hidden with switch-to-buffer function"
+  (let ((unwanted-buffers nil))
+    (dolist (item input-list)
+      (if
+          (with-current-buffer (get-buffer item) (derived-mode-p 'dired-mode))
+          (add-to-list 'unwanted-buffers item)
+        (if (string-match-p "^\\*.*\\*$" item)
+            (add-to-list 'unwanted-buffers item))))
+    unwanted-buffers))
+
+;; ai slop
+(defun my-fido-filter-buffers (orig-fun &rest args)
+  "Filter out uninteresting buffers from fido-mode completion list."
+  (let ((read-buffer-completion-ignore-case t))
+    ;; We wrap the execution and filter the allowed candidates predicate
+    (cl-letf* ((old-predicate (nth 3 args))
+               ((nth 3 args)
+                (lambda (buf)
+                  (let ((name (if (stringp buf) buf (car buf))))
+                    (and (not (member name
+                                      (list-unwanted-buffers
+                                       (mapcar #'buffer-name (buffer-list)))))
+                         (if old-predicate (funcall old-predicate buf) t))))))
+      (apply orig-fun args))))
+
+;; Apply this filtering specifically to buffer switching
+(advice-add 'read-buffer :around #'my-fido-filter-buffers)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;SLIME
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -905,7 +960,14 @@ python-shell-virtual-root variable before calling run-python"
 (add-hook 'asm-mode-hook
           (lambda ()
             (electric-indent-local-mode -1)
-            (setq evil-auto-indent nil)))
+            (setq-local electric-indent-mode nil)
+            (setq evil-auto-indent nil)
+            (setq-local indent-line-function #'indent-relative-first-indent-point)
+            (local-set-key (kbd "RET") #'newline-and-indent)
+            (evil-define-key 'insert asm-mode-map
+              (kbd "RET") #'newline-and-indent
+              [return]    #'newline-and-indent)))
+
 
 
 
@@ -919,6 +981,7 @@ python-shell-virtual-root variable before calling run-python"
       :config
       (setq vterm-shell "/usr/bin/bash")
       (setq initial-buffer-choice #'vterm)
+      (setq vterm-set-bold-highbright t)
       (add-to-list 'display-buffer-alist
                    '("\\*vterm*"
                      ;;(display-buffer-full-frame)
@@ -1005,5 +1068,3 @@ python-shell-virtual-root variable before calling run-python"
       (treesit-auto-install 'prompt)
       :config
       (treesit-auto-add-to-auto-mode-alist 'all)
-      (global-treesit-auto-mode)))
-
