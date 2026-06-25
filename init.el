@@ -93,10 +93,6 @@
         (delete-char (* current-tab-width -1))
       (delete-char -1))))
 
-
-
-
-
 (recentf-mode 1)
 (savehist-mode 1) ;;saves clipboard contents accross sessions
 (push 'kill-ring savehist-additional-variables)
@@ -123,8 +119,22 @@
 (setq help-window-select t)  ;;Switch focus to help buffers automatically
 (save-place-mode 1) ;restore cursor where left off when switch buffers or reopen files
 
-(set-face-attribute 'default nil :font "Noto Sans Mono" :height 120)
-(set-face-attribute 'italic nil :family "Noto Mono" :slant 'italic :height 120)
+;; (set-face-attribute 'default nil :font "Noto Sans Mono" :height 110)
+;; (set-face-attribute 'italic nil :family "Noto Mono" :slant 'italic :height 110)
+
+;; (set-face-attribute 'default nil :font "Space Mono" :height 120)
+
+(set-face-attribute 'default nil :font "JetBrains Mono" :height 110)
+
+;; (set-face-attribute 'default nil :font "Terminus (TTF) for Windows" :height 130)
+
+;; (set-face-attribute 'default nil :font "Fira Code" :height 110)
+
+
+;; (set-face-attribute 'default nil :font "Consolas" :height 130)
+;; (set-face-attribute 'italic nil :family "Noto Mono" :slant 'italic :height 110)
+;; (set-face-attribute 'default nil :font "CommitMono" :height 110 :weight 'regular :slant 'normal)
+;; ;; (set-face-attribute 'italic nil :family "CommitMono Italic" :slant 'italic :height 110)
 
 (add-hook 'lisp-mode-hook 'display-line-numbers-mode)
 (add-hook 'emacs-lisp-mode-hook 'display-line-numbers-mode)
@@ -756,35 +766,63 @@ The input string can be \"#RRGGBB\" or \"RRGGBB\"."
 (setq completions-sort #'historical)
 (setq completions-max-height 9)
 
-
 (defun list-unwanted-buffers (input-list)
   "Create a list with buffers that should be hidden with switch-to-buffer function"
   (let ((unwanted-buffers nil))
     (dolist (item input-list)
-      (if
-          (with-current-buffer (get-buffer item) (derived-mode-p 'dired-mode))
-          (add-to-list 'unwanted-buffers item)
-        (if (string-match-p "^\\*.*\\*$" item)
-            (add-to-list 'unwanted-buffers item))))
+      (when (get-buffer item)
+        (if
+            (with-current-buffer item (derived-mode-p 'dired-mode))
+            (add-to-list 'unwanted-buffers item)
+          (if (string-match-p "^\\*.*\\*$" item)
+              (add-to-list 'unwanted-buffers item)))))
     unwanted-buffers))
 
-;; ai slop
+;; ;; ai slop
+;; (defun my-fido-filter-buffers (orig-fun &rest args)
+;;   "Filter out uninteresting buffers from fido-mode completion list."
+;;   (let ((read-buffer-completion-ignore-case t))
+;;     ;; We wrap the execution and filter the allowed candidates predicate
+;;     (cl-letf* ((old-predicate (nth 3 args))
+;;                ((nth 3 args)
+;;                 (lambda (buf)
+;;                   (let ((name (if (stringp buf) buf (car buf))))
+;;                     (and (not (member name
+;;                                       (list-unwanted-buffers
+;;                                        (mapcar #'buffer-name (buffer-list)))))
+;;                          (if old-predicate (funcall old-predicate buf) t))))))
+;;       (apply orig-fun args))))
+
+;; ai slop 2
 (defun my-fido-filter-buffers (orig-fun &rest args)
-  "Filter out uninteresting buffers from fido-mode completion list."
-  (let ((read-buffer-completion-ignore-case t))
-    ;; We wrap the execution and filter the allowed candidates predicate
-    (cl-letf* ((old-predicate (nth 3 args))
-               ((nth 3 args)
-                (lambda (buf)
-                  (let ((name (if (stringp buf) buf (car buf))))
-                    (and (not (member name
-                                      (list-unwanted-buffers
-                                       (mapcar #'buffer-name (buffer-list)))))
-                         (if old-predicate (funcall old-predicate buf) t))))))
-      (apply orig-fun args))))
+  "Filter out uninteresting buffers from fido-mode completion list safely."
+  (let* ((read-buffer-completion-ignore-case t)
+         ;; 1. Pad the args list to ensure it has at least 4 elements
+         (padded-args (append args (make-list (max 0 (- 4 (length args))) nil)))
+         ;; 2. Extract the original predicate (the 4th argument, index 3)
+         (old-predicate (nth 3 padded-args))
+         ;; 3. Define our wrapper predicate
+         (new-predicate (lambda (buf)
+                          (let ((name (if (stringp buf) buf (car buf))))
+                            (and (not (member name
+                                             (list-unwanted-buffers
+                                              (mapcar #'buffer-name (buffer-list)))))
+                                 (if old-predicate (funcall old-predicate buf) t))))))
+    
+    ;; 4. Set our new predicate back into the 4th slot safely
+    (setf (nth 3 padded-args) new-predicate)
+    
+    ;; 5. Execute the original function with the safe, padded arguments
+    (apply orig-fun padded-args)))
+;; end ai slop 2
+
 
 ;; Apply this filtering specifically to buffer switching
 (advice-add 'read-buffer :around #'my-fido-filter-buffers)
+
+
+;; (if (eq system-type 'gnu/linux)
+;;     (advice-add 'read-buffer :around #'my-fido-filter-buffers))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;SLIME
