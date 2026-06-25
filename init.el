@@ -124,7 +124,8 @@
 
 ;; (set-face-attribute 'default nil :font "Space Mono" :height 120)
 
-(set-face-attribute 'default nil :font "JetBrains Mono" :height 110)
+;; (set-face-attribute 'default nil :font "JetBrains Mono" :height 110)
+(add-to-list 'default-frame-alist '(font . "JetBrains Mono-11"))
 
 ;; (set-face-attribute 'default nil :font "Terminus (TTF) for Windows" :height 130)
 
@@ -1081,10 +1082,7 @@ python-shell-virtual-root variable before calling run-python"
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(company-quickhelp dired-sidebar dired-x evil-collection lsp-docker
-                       lsp-ui mos-mode nasm-mode slime-company
-                       treemacs treesit-auto vterm)))
+ '(package-selected-packages nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -1100,9 +1098,9 @@ python-shell-virtual-root variable before calling run-python"
                '(asm-mode . ("asm-lsp"))))
 
 
-(if (eq system-type 'gnu/linux)
-    (use-package treesit-auto
-      :custom
-      (treesit-auto-install 'prompt)
-      :config
-      (treesit-auto-add-to-auto-mode-alist 'all)))
+;; (if (eq system-type 'gnu/linux)
+;;     (use-package treesit-auto
+;;       :custom
+;;       (treesit-auto-install 'prompt)
+;;       :config
+;;       (treesit-auto-add-to-auto-mode-alist 'all)))
